@@ -1,0 +1,318 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/mui.css"/>
+    <link href="../css/hwl.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <!--标准mui.css-->
+    <!--App自定义的css-->
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <link href="../css/mui.picker.css" rel="stylesheet"/>
+    <link href="../css/mui.poppicker.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />-->
+    <style>
+        .slide-img {
+        height: 150px;
+        }
+    </style>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../SUI Mobile/lib/css/sm.min.css">
+    <link rel="stylesheet" href="../SUI Mobile/lib/css/sm-extend.min.css">
+
+</head>
+<body>
+
+<div class="page-group" id="page_group">
+    <div class="page page-current" id="page_book_city">
+        <!-- 搜索框 -->
+        <div class="bar bar-nav">
+            <div class="searchbar" id="search">
+                <div class="search-input">
+                    <label class="icon icon-search"></label>
+                    <input type="search" placeholder='搜索书名' width="100px" disabled/>
+                </div>
+            </div>
+        </div>
+        <div class="mui-content" style="margin-bottom: 100px">
+            <div id="slider" class="mui-slider">
+                <div class="mui-slider-group mui-slider-loop">
+                    <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+                    <div class="mui-slider-item mui-slider-item-duplicate slide-img">
+                        <a href="#">
+                            <img class="slide-img" src="../images/yuantiao.jpg">
+                        </a>
+                    </div>
+                    <div class="mui-slider-item slide-img">
+                        <a href="#">
+                            <img class="slide-img" src="../images/1.png">
+                        </a>
+                    </div>
+                    <div class="mui-slider-item slide-img">
+                        <a href="#">
+                            <img class="slide-img" src="../images/muwu.jpg">
+                        </a>
+                    </div>
+                    <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+                    <div class="mui-slider-item mui-slider-item-duplicate">
+                        <a href="#">
+                            <img class="slide-img" src=" ../images/1.png">
+                            <!--<p class="mui-slider-title">幸福就是可以一起睡觉</p>-->
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- 工具栏 -->
+        <nav class="bar bar-tab">
+            <a class="tab-item external active" href="#" name="btn_book_city">
+                <span class="icon icon-search"></span>
+                <span class="tab-label">书城</span>
+            </a>
+            <a class="tab-item external" href="#" name="btn_book_list">
+                <span class="icon icon-star"></span>
+                <span class="tab-label">书单</span>
+            </a>
+            <a class="tab-item external" href="#" name="btn_me">
+                <span class="icon icon-me"></span>
+                <span class="tab-label">我</span>
+            </a>
+        </nav>
+        <!-- 这里是页面内容区 -->
+        <div class="content" style="margin-top: 105px">
+            <!--数据列表-->
+            <ul id="" class="mui-table-view mui-table-view-chevron">
+            </ul>
+        </div>
+    </div>
+    <div class="page" id="page_book_list">
+        <!-- 标题栏 -->
+        <header class="bar bar-nav">
+            <h1 class="title">这里是书单</h1>
+        </header>
+        <!-- 工具栏 -->
+        <nav class="bar bar-tab">
+            <a class="tab-item external" href="#" name="btn_book_city">
+                <span class="icon icon-search"></span>
+                <span class="tab-label">书城</span>
+            </a>
+            <a class="tab-item external active" href="#" name="btn_book_list">
+                <span class="icon icon-star"></span>
+                <span class="tab-label">书单</span>
+            </a>
+            <a class="tab-item external" href="#" name="btn_me">
+                <span class="icon icon-me"></span>
+                <span class="tab-label">我</span>
+            </a>
+        </nav>
+
+        <!-- 这里是页面内容区 -->
+        <div class="content">
+            <h1 id="div_content1" align="center" style="margin-top: 100px">暂无内容</h1>
+        </div>
+    </div>
+    <div class="page" id="page_me">
+        <!-- 工具栏 -->
+        <nav class="bar bar-tab">
+            <a class="tab-item external" href="#" name="btn_book_city">
+                <span class="icon icon-search"></span>
+                <span class="tab-label">书城</span>
+            </a>
+            <a class="tab-item external" href="#" name="btn_book_list">
+                <span class="icon icon-star"></span>
+                <span class="tab-label">书单</span>
+            </a>
+            <a class="tab-item external active" href="#" name="btn_me">
+                <span class="icon icon-me"></span>
+                <span class="tab-label">我</span>
+            </a>
+        </nav>
+        <!-- 这里是页面内容区 -->
+        <div class="content">
+            <div class="mui-content">
+                <div class="" align="center" style="background-color: #46A3FF"><img src="../images/jobhunter/msg_who3.png"
+                                                                                    style="background-color: white;border-radius:50%; margin-top: 10px"/>
+                    <div class="" style="color: white;" id="nickname"> 陈镜冰</div>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <ul class="mui-table-view" id="select" type="button">
+                        <li class="mui-table-view-cell"><span style=" height:30px; line-height: 30px;"><span
+                                class="mui-icon mui-icon-spinner-cycle mui-spin"></span>总积分</span>
+                            <a style="float: right;color: skyblue;" href="javascript:;">
+                                <div style="padding-bottom: 5px;"></div>
+                                100</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mui-control-content mui-active ">
+                    <ul class="mui-table-view ">
+                        <li class="mui-table-view-cell ">
+                            <span class="mui-icon mui-icon-spinner-cycle mui-spin"></span>今日积分</span>
+                            <a style="float: right;color: skyblue;" href="javascript:;">
+                                <div style="padding-bottom: 5px;"></div>
+                                100</a>
+                        </li>
+                        <!--<li class="mui-table-view-cell ">
+                            <a href="../post/collectPost.html#post " class="mui-navigate-right "><span class="mui-icon iconfont mui-icon-star "></span>我收藏的书本</a>
+                        </li>-->
+                        <li class="mui-table-view-cell ">
+                            <a href="../me/massage.html" class="mui-navigate-right "><span
+                                    class="mui-icon iconfont mui-icon-gear "></span>个人资料设置</a>
+                        </li>
+                        <li class="mui-table-view-cell ">
+                            <!--<button id='demo1' data-options='{}' class=" mui-navigate-right"><span class="mui-icon iconfont mui-icon mui-icon-spinner mui-spin "></span>定时读书</button>-->
+                            <a id='demo5' data-options='{"type":"time"}' class="mui-navigate-right btn "><span
+                                    class="mui-icon iconfont mui-icon mui-icon-spinner mui-spin "></span>定时读书<span id='result'
+                                                                                                                   style="margin-left: 50%"></span></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <ul>
+                        <li class="mui-table-view-cell " style="margin-right: 20px; list-style-type:none;">
+                            <a href="login.html"
+                               style="text-align: center; margin-right: 10px;background-color: #46A3FF; "><span>退出登录</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="../js/mui.min.js"></script>
+<script src="../js/mui.picker.js"></script>
+<script src="../js/mui.picker.min.js"></script>
+<script src="../js/mui.poppicker.js"></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/sm-extend.min.js' charset='utf-8'></script>
+<script>
+      $(document).ready(function (e) {
+        //设置下边栏目的点击事件
+        var pageBookCity = $("#page_book_city");
+        var pageBookList = $("#page_book_list");
+        var pageMe = $("#page_me");
+        var btn_book_city = $("a[name='btn_book_city']");
+        var btn_book_list = $("a[name='btn_book_list']");
+        var btn_me = $("a[name='btn_me']");
+        btn_book_city.click(function () {
+          pageBookCity.removeClass("page");
+          pageBookCity.addClass("page page-current");
+          pageBookList.removeClass("page page-current");
+          pageBookList.addClass("page");
+          pageMe.removeClass("page page-current");
+          pageMe.addClass("page");
+        });
+        btn_book_list.click(function () {
+          pageBookCity.removeClass("page page-current");
+          pageBookCity.addClass("page");
+          pageBookList.removeClass("page");
+          pageBookList.addClass("page page-current");
+          pageMe.removeClass("page page-current");
+          pageMe.addClass("page");
+        });
+        btn_me.click(function () {
+          pageBookCity.removeClass("page page-current");
+          pageBookCity.addClass("page");
+          pageBookList.removeClass("page page-current");
+          pageBookList.addClass("page");
+          pageMe.removeClass("page");
+          pageMe.addClass("page page-current");
+        });
+
+        //设置书城页面
+        var slider = mui("#slider");
+        slider.slider({
+          interval: 1000
+        });
+        var table = document.body.querySelector('.mui-table-view');
+        for (var i = 0; i < 5; i++) {
+          var li = document.createElement('li');
+          li.className = 'mui-table-view-cell book_list';
+          li.innerHTML = '<div>' + '<div class="flex">' + '<img src="../images/1.png" alt="" style = "height:80px;width:80px"/>' + '<div class="flex-main" style="margin-left: 10px;">' + '<h4>' + '书名' + '</h4>' + '<p>' + '作者' + '</p>' + '<div class="fs-14" style="color: grade;" >' + ' ' + '<div class="fs-14" style="color: blue;">' + '年份' + '</div>' + '</div>' + '</div>' + '</div>';
+          table.appendChild(li);
+        }
+        var search = $("#search");
+        search.click(function () {
+          window.location.href = "search.html";
+        });
+        var book_list = $(".book_list");
+        book_list.click(function () {
+          window.location.href = "../book/book_info.html";
+        });
+
+        //设置我页面
+//        var nickname = $("#nickname");
+        /*var s = {
+         "today_integration": 0,
+         "all_integration": 0,
+         "username": "admin",
+         "timing": "0",
+         "face_image": "0",
+         "nickname": "管理员",
+         "password": "admin"
+         };
+         alert(s.nickname);*/
+        var userInfo = JsInteractionEvent.getUserInfo();
+        alert(JSON.parse(userInfo).nickname);
+//        nickname.html(JsInteractionEvent.getNickName());
+      });
+
+      //设置我页面
+      (function ($) {
+        var result = $('#result')[0];
+        var btns = $('.btn');
+        btns.each(function (i, btn) {
+          btn.addEventListener('tap', function () {
+            var optionsJson = this.getAttribute('data-options') || '{}';
+            var options = JSON.parse(optionsJson);
+            var id = this.getAttribute('id');
+            /*
+             * 首次显示时实例化组件
+             * 示例为了简洁，将 options 放在了按钮的 dom 上
+             * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+             */
+            var picker = new $.DtPicker(options);
+            picker.show(function (rs) {
+              /*
+               * rs.value 拼合后的 value
+               * rs.text 拼合后的 text
+               * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+               * rs.m 月，用法同年
+               * rs.d 日，用法同年
+               * rs.h 时，用法同年
+               * rs.i 分（minutes 的第二个字母），用法同年
+               */
+              result.innerText = rs.text;
+              /*
+               * 返回 false 可以阻止选择框的关闭
+               * return false;
+               */
+              /*
+               * 释放组件资源，释放后将将不能再操作组件
+               * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+               * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+               * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+               */
+              picker.dispose();
+            });
+          }, false);
+        });
+      })(mui);
+    </script>
+<script>
+      $.init();
+    </script>
+</body>
+</html>

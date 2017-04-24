@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link href="../css/hwl.css" rel="stylesheet"/>
+    <style type="text/css">
+      .panel2 {
+        line-height: 60px;
+      }
+
+      .panel2 .mui-pull-right {
+        line-height: normal;
+        padding-right: 10px;
+      }
+
+      .panel3 {
+        line-height: 5px;
+        float: left;
+      }
+
+      .welfare-color {
+        border-color: #10cbe0;
+        color: #10cbe0;
+      }
+
+      .devile-color {
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="mui-bar mui-bar-nav">
+      <a class="mui-icon mui-icon-left-nav mui-pull-left" onClick="javascript :history.back(-1);"></a>
+      <h1 class="mui-title">选择章节</h1>
+    </header>
+    <div style="margin-top: 45px">
+      <ul class="mui-table-view">
+        <li class="mui-table-view-cell"><a href="#">第一章</a></li>
+        <li class="mui-table-view-cell"><a href="#">第二章</a></li>
+        <li class="mui-table-view-cell"><a href="#">第三章</a></li>
+        <li class="mui-table-view-cell"><a href="#">第四章</a></li>
+        <li class="mui-table-view-cell"><a href="#">第五章</a></li>
+        <li class="mui-table-view-cell"><a href="#">第六章</a></li>
+        <li class="mui-table-view-cell"><a href="#">第七章</a></li>
+        <li class="mui-table-view-cell"><a href="#">第八章</a></li>
+        <li class="mui-table-view-cell"><a href="#">第九章</a></li>
+        <li class="mui-table-view-cell"><a href="#">第十章</a></li>
+      </ul>
+    </div>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/util.js"></script>
+    <script src="../SUI Mobile/plugin/tests/vendor/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $(".mui-table-view-cell").click(function () {
+          window.location.href = "read_book.html";
+        });
+      });
+    </script>
+  </body>
+
+</html>

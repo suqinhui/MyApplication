@@ -1,0 +1,199 @@
+html, body, .mui-content {
+    height: 100%;
+}
+body {
+    color: #333;
+    margin: 0px;
+}
+.mui-bar {
+	-webkit-box-shadow: 0 0 2px rgba(0,0,0,.5);
+	box-shadow: 0 0 2px rgba(0,0,0,.5);
+}
+.mui-bar-red {
+	background-color: #fff;
+}
+.mui-bar-red h1, .mui-bar-red a, .mui-bar-red button {
+    color: #333 !important;
+}
+.mui-btn {
+    padding: 10px;
+}
+
+/*flex布局*/
+
+.flex {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+.flex-row {
+    -webkit-flex-flow: column wrap;
+    -moz-flex-flow: column wrap;
+    -ms-flex-flow: column wrap;
+    -o-flex-flow: column wrap;
+    flex-flow: column wrap;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -o-box-orient: vertical;
+    box-orient: vertical;
+}
+.flex-side {
+    -webkit-order: 1;
+    -moz-order: 1;
+    -ms-order: 1;
+    order: 1;
+}
+.flex-main {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    position: relative;
+}
+
+/*底部栏高亮样式*/
+
+.mui-bar-tab .mui-tab-item.mui-active {
+    color: #ffb82f;
+}
+.bg-cover, .bg-contain, .bg-full {
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.bg-cover {
+    background-size: cover;
+}
+.bg-contain {
+    background-size: contain;
+}
+.bg-full {
+    background-size: 100% 100%;
+}
+.of-auto {
+    overflow: auto !important;
+}
+.of-hidden {
+    overflow: hidden !important;
+}
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.radius {
+    border-radius: 50% !important;
+}
+.no-padding {
+    padding: 0 !important;
+}
+.no-hor-padding {
+    padding-left: 0;
+    padding-right: 0;
+}
+.no-ver-padding {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/*文字*/
+.text-orange{
+	color: #f0ad4e;
+}
+.text-gray {
+    color: #999;
+}
+.text-red {
+    color: #f60;
+}
+.fs-18 {
+    font-size: 18px;
+}
+.fs-16 {
+    font-size: 16px;
+}
+.fs-15 {
+    font-size: 15px;
+}
+.fs-14 {
+    font-size: 14px;
+}
+.fs-12 {
+    font-size: 12px;
+}
+.fs-0 {
+    font-size: 0;
+    line-height: normal;
+}
+
+/*margin*/
+
+.mt-0 {
+    margin-top: 0 !important;
+}
+.mt-10 {
+    margin-top: 10px !important;
+}
+
+/*其他*/
+
+.center-block {
+    display: block;
+    margin: 0 auto;
+}
+.circle {
+	border-radius: 50% !important;
+}
+
+/*aui*/
+
+.aui-title {
+    margin: 20px 15px 10px;
+    color: #6d6d72;
+    font-size: 15px;
+}
+
+/*aui-panel*/
+
+.aui-panel {
+    position: relative;
+    margin-top: 10px;
+    background-color: #fff;
+    border-top: 1px solid #DCDBE1;
+    border-bottom: 1px solid #DCDBE1;
+    padding: 10px 15px;
+}
+.aui-panel.no-bg {
+    background-color: transparent;
+}
+.aui-panel.no-border {
+    border-top: none;
+    border-bottom: none;
+}
+.aui-panel-title {
+    color: #959595;
+    font-size: 16px;
+    font-weight: 700;
+    text-shadow: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+/*重置图片轮播组件样式*/
+
+.mui-slider .mui-slider-group .mui-slider-item {
+    /*font-size: 0;
+    line-height: normal;*/
+}
+.mui-slider-indicator .mui-indicator {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin: 1px 4px;
+    background-color: #fff;
+}
+.mui-slider-indicator .mui-active.mui-indicator {
+    background-color: #ffb82f;
+}

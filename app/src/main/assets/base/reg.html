@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+		  content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+	<title></title>
+	<link href="../css/mui.min.css" rel="stylesheet"/>
+	<style>
+		body {
+		width: 100%;
+		height: 100%;
+		}
+
+		.mui-content {
+		height: 100%;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		}
+
+		.mui-input-group {
+		margin-top: 10px;
+		background-color: #BBBBBB;
+		}
+
+		.mui-input-row label ~ input,
+		.mui-input-row label ~ select,
+		.mui-input-row label ~ textarea {
+		width: 78%;
+		}
+
+		.mui-input-group label {
+		width: 22%;
+		background-color: #797979;
+		height: 100%;
+		}
+
+		.mui-content-padded {
+		margin-top: 25px;
+		}
+
+		.mui-btn {
+		padding: 10px;
+		}
+
+		.mui-content-padded {
+		margin-top: 2px;
+		width: 80%;
+		margin-left: auto;
+		margin-right: auto;
+		}
+
+		.h1 {
+		color: #007AFF;
+		text-align: center;
+		padding-top: 100px;
+		margin: 0;
+		width: 100%;
+		padding-bottom: 80px;
+		}
+
+		.h1div {
+		height: 40%;
+		display: block;
+		background-image: url(../images/9.jpg);
+		background-size: 100% 100%;
+		}
+
+		.count_down {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 100%;
+		height: 40px;
+		text-align: center;
+		line-height: 40px;
+		/*background-color: rgba(0,0,0,.7);*/
+		background-color: rgba(255, 255, 255, .8);
+		border-radius: 2px;
+		/*color: #fff;*/
+		display: none;
+		}
+
+		.input-icon-user {
+		background-image: url(../images/login/icon_denglu_yonghuming.png);
+		}
+
+		.input-icon-code {
+		background-image: url(../images/login/icon_denglu_mima.png);
+		}
+
+		.input-icon-lock {
+		background-image: url(../images/login/icon_denglu_mima.png);
+		}
+
+		.input-icon {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 40px;
+		height: 40px;
+		background-size: 24px 24px;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-color: #222222;
+		border-radius: 3px 0px 0px 3px;
+		}
+
+		.input-icon + input {
+		padding-left: 55px;
+		}
+
+		.regform {
+		margin-top: 25px;
+		width: 80%;
+		margin-left: auto;
+		margin-right: auto;
+		}
+	</style>
+</head>
+
+<body>
+<div class="h1div">
+	<div class="h1div">
+		<h1 class="h1">爱读</h1></div>
+</div>
+<div class="mui-content">
+	<div class="formdiv">
+		<div id='login-form' class="regform">
+			<div class="mui-input-row">
+				<span class="input-icon input-icon-user" style="background-color: dodgerblue;"></span>
+				<input type="text" name="username" id="username" value="" class="mui-input-clear mui-input"
+					   placeholder="请输入用户名"/>
+			</div>
+			<div class="mui-input-row">
+				<span class="input-icon input-icon-user" style="background-color: dodgerblue;"></span>
+				<input type="text" name="nickname" id="nickname" value="" class="mui-input-clear mui-input"
+					   placeholder="请输入昵称"/>
+			</div>
+			<div class="mui-input-row">
+				<span class="input-icon input-icon-lock" style="background-color: dodgerblue;"></span>
+				<input type="password" name="" id="password" value="" class="mui-input-clear"
+					   placeholder="请输入密码,6-16位数字或字母"/>
+			</div>
+			<div class="mui-input-row">
+				<span class="input-icon input-icon-lock" style="background-color: dodgerblue;"></span>
+				<input type="password" name="" id="password1" value="" class="mui-input-clear"
+					   placeholder="请确认密码,6-16位数字或字母"/>
+			</div>
+		</div>
+	</div>
+	<div class="mui-content-padded">
+		<button id='register' class="mui-btn mui-btn-block mui-btn-primary">注册</button>
+		<button id='to_login' class="mui-btn mui-btn-block mui-btn-primary mui-btn-outlined">返回登录</button>
+	</div>
+</div>
+
+</div>
+<script src="../js/mui.min.js"></script>
+<!--<script src="../js/app.js"></script>-->
+<script src="../js/util.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script>
+      var userName = document.getElementById("username");
+      var nickName = document.getElementById("nickname");
+      var passWord = document.getElementById("password");
+      var passWord1 = document.getElementById("password1");
+      var register = document.getElementById("register");
+      var toLogin = document.getElementById("to_login");
+      register.addEventListener("click", function () {
+        var registerResult = JsInteractionEvent.doRegister(userName.value, nickName.value, passWord.value, passWord1.value);
+        if (registerResult == true) {
+          alert("注册成功！");
+          window.open("login.html");
+        }
+      });
+      toLogin.addEventListener("click", function () {
+        window.open("login.html");
+      });
+    </script>
+</body>
+
+</html>

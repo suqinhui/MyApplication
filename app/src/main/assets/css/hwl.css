@@ -1,0 +1,102 @@
+html, body, .mui-content {
+    height: 100%;
+}
+body {
+    color: #333;
+    margin: 0px;
+}
+/*flex布局*/
+
+.flex {
+    display: -webkit-box;
+    display:  -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    display: ;
+}
+.flex-row {
+    -webkit-flex-flow: column wrap;
+    -moz-flex-flow: column wrap;
+    -ms-flex-flow: column wrap;
+    -o-flex-flow: column wrap;
+    flex-flow: column wrap;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -o-box-orient: vertical;
+    box-orient: vertical;
+}
+.flex-side {
+    -webkit-order: 1;
+    -moz-order: 1;
+    -ms-order: 1;
+    order: 1;
+}
+.flex-main {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    position: relative;
+}
+
+.fs-18 {
+    font-size: 18px;
+}
+.fs-16 {
+    font-size: 16px;
+}
+.fs-15 {
+    font-size: 15px;
+}
+.fs-14 {
+    font-size: 14px;
+}
+.fs-12 {
+    font-size: 12px;
+}
+.fs-0 {
+    font-size: 0;
+    line-height: normal;
+}
+
+/*aui*/
+
+.aui-title {
+    margin: 20px 15px 10px;
+    color: #6d6d72;
+    font-size: 15px;
+}
+
+/*aui-panel*/
+
+.aui-panel {
+    position: relative;
+    margin-top: 10px;
+    background-color: #fff;
+    /*border-top: 1px solid #DCDBE1;
+    border-bottom: 1px solid #DCDBE1;*/
+    padding: 10px 5px;
+}
+.aui-panel.no-bg {
+    background-color: transparent;
+}
+.aui-panel.no-border {
+    border-top: none;
+    border-bottom: none;
+}
+.aui-panel-title {
+    color: #959595;
+    font-size: 16px;
+    font-weight: 700;
+    text-shadow: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.center-block {
+	display: block;
+	margin: 0 auto;
+}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link href="../css/hwl.css" rel="stylesheet"/>
+    <style type="text/css">
+        .panel2 {
+        line-height: 60px;
+        }
+
+        .panel2 .mui-pull-right {
+        line-height: normal;
+        padding-right: 10px;
+        }
+
+        .panel3 {
+        line-height: 5px;
+        float: left;
+        }
+
+        .welfare-color {
+        border-color: #10cbe0;
+        color: #10cbe0;
+        }
+
+        .devile-color {
+        color: white;
+        }
+    </style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-icon mui-icon-left-nav mui-pull-left" onClick="javascript :history.back(-1);"></a>
+    <h1 class="mui-title">书本详情</h1>
+</header>
+
+<nav class="mui-bar mui-bar-tab" style="margin-top: 10px;">
+
+    <input type="button" value="收藏本文"
+           style="width: 50%; height: 50px;border: none; color: dodgerblue; font-size: 16px">
+    <input type="button" value="开始阅读" id="begin_read"
+           style="width: 50%; height: 50px;border: none;background: dodgerblue; color: #FFFFFF;font-size: 16px">
+    <!--<a id="defaultTab" class="mui-tab-item mui-active"> <span class="mui-icon mui-icon-star"></span>
+      <p style="color: dodgerblue;">收藏本书</p>
+    </a>
+    <a class="mui-tab-item" style="background-color: deepskyblue;" id="begin_read"> <span
+            class="mui-icon mui-icon-paperplane devile-color"></span> <span
+            class="mui-tab-label devile-color">开始阅读</span> </a>-->
+</nav>
+
+<div class="mui-content" style="margin-bottom: 150px">
+    <div class="aui-panel flex">
+        <img src="../images/login/reg-degree.png" alt="公司LOGO"/>
+        <div class="flex-main" style="margin-left: 10px;">
+            <h4>盗墓笔记</h4>
+            <h5>作者：<span>南派三叔</span></h5>
+            <div class="fs-14" style="color: red;height: 20px;">2013</div>
+        </div>
+    </div>
+
+
+    <div id="welfare" class="mui-row aui-panel panel2" style="line-height: 20px; ">
+        <button class="welfare-color">冒险</button>
+        　
+        <button class="welfare-color">小说</button>
+        <!--	<button class="welfare-color">恐怖</button>-->
+    </div>
+
+    <div id="post_descr" class="mui-row aui-panel">
+        <div align="middle">
+            <span class="mui-icon mui-icon-chatboxes-filled" style="color:#10cbe0 ;"></span>
+          <span class="fs-20" style="line-height: 50px">
+					   <b>本书介绍 </b>
+					</span>
+        </div>
+        <span style="line-height: 40px;">《盗墓笔记》由中国友谊、时代文艺、上海文化于200记》由中国友谊、时代文艺、上海文化于200记》由中国友谊、时代文艺、上海文化于2007年-2011年陆续出版发行，作者南派三叔。[1] 《盗墓笔记捌：大结局（上、下）》于2011年12月19日上市，至此《盗墓笔记》系列完结，共出版实体书九本。《盗墓笔记》系列是南派三叔的代表作，其堪称近年来中国出版界的经典之作，获得百万读者狂热追捧。南派三叔也凭此作名满天下，跻身中国超级畅销书作家行列。2015年，《盗墓笔记》由欢瑞世纪影视传媒股份有限公司改编成为网络剧[2]  。2016年11月，《盗墓笔记》荣登2016中国泛娱乐指数盛典“中国IP价值榜-网络文学榜top10”[3]</span>
+        <br><br><br><br><br>
+    </div>
+</div>
+
+</div>
+
+<script src="../js/mui.min.js"></script>
+<script src="../js/util.js"></script>
+<script src="../SUI Mobile/plugin/tests/vendor/jquery.min.js"></script>
+<script type="text/javascript">
+      var beginRead = document.getElementById("begin_read");
+      beginRead.addEventListener("click", function () {
+        window.location.href = "book_chapter.html";
+      });
+    </script>
+</body>
+
+</html>

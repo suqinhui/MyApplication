@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title></title>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <link href="../css/mui.picker.css" rel="stylesheet"/>
+    <link href="../css/mui.poppicker.css" rel="stylesheet"/>
+    <title>插件文档</title>
+    <!-- <link rel="stylesheet" href="/framebj/thirdparty/zTree/3.5.17/css/zTreeStyle/zTreeStyle.css"> -->
+    <link rel="stylesheet" type="text/css" href="../css/theme/bootstrap-ex.css">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-ex.css">
+
+    <style>
+        body {
+        background-color: white;
+        }
+
+        .div1 {
+        text-align: center;
+        }
+
+        .mui-content {
+        background-color: white;
+        }
+
+        .lable {
+        font-style: initial;
+        margin-left: 0;
+        margin-top: 10px;
+
+        }
+
+        .mui-badge {
+        margin-left: 20%;
+        }
+
+        .mui-input-row {
+        height: 50px;
+        }
+
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-icon mui-icon-left-nav mui-pull-left" onClick="javascript :history.back(-1);"></a>
+    <h1 class="mui-title">对你的初步了解</h1>
+</header>
+<div class="mui-content">
+    <div class="div1">
+        <img src="../images/login/reg-persionphoto.png" width="100px" height="100px" style="margin-top: 10px"/>
+    </div>
+    <div class="mui-input-row">
+        <label style="width: 35px;"><img src="../images/login/reg-name.png" width="30px" height="30px"/></label>
+        <label class="lable" style="width: 65px;">昵称</label>
+        <input type="text" placeholder="请输入"
+               style="text-align: left;border:hidden;width: 60%;margin-top: 10px;"/>
+    </div>
+    <div class="mui-input-row">
+        <label style="width: 35px;"><img src="../images/login/reg-sex.png" width="30px" height="30px"/></label>
+        <label class="lable" style="width: 65px;">性别</label>
+        <button id='showSexPicker' class="mui-btn mui-btn-block" type='button'
+                style="text-align: left;border:hidden;width: 64%;margin-top: 10px;font-size:medium;">请选择
+        </button>
+    </div>
+    <div class="mui-input-row">
+        <label style="width: 35px;"><img src="../images/login/reg-workexperience.png" width="30px"
+                                         height="30px"/></label>
+        <label class="lable" style="width: 65px;">年龄</label>
+        <input type="text" placeholder="请输入"
+               style="text-align: left;border:hidden;width: 60%;margin-top: 10px;"/>
+    </div>
+    <div class="mui-input-row">
+        <label style="width: 35px;"><img src="../images/login/reg-email.png" width="30px" height="30px"/></label>
+        <label class="lable" style="width: 65px;">邮箱</label>
+        <input type="text" placeholder="请输入"
+               style="text-align: left;border:hidden;width: 60%;margin-top: 10px;"/>
+    </div>
+
+    <div class="mui-content-padded">
+        <button id='keep' class="mui-btn mui-btn-block mui-btn-primary" style="padding: 5px 0px;">保存</button>
+    </div>
+
+</div>
+<script src="../js/mui.min.js"></script>
+<script src="../js/mui.picker.js"></script>
+<script src="../js/mui.poppicker.js"></script>
+<script src="../js/sex.data.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/util.js"></script>
+<script src="../SUI Mobile/plugin/tests/vendor/jquery.min.js"></script>
+<script type="text/javascript">
+      $(document).ready(function () {
+        $("#keep").click(function () {
+          window.location.href = "../base/main.html";
+        });
+      });
+      (function ($, doc) {
+        $.init();
+        $.ready(function () {
+          //性别
+          var sexPicker = new $.PopPicker({
+            layer: 1
+          });
+          sexPicker.setData(sexData);
+          var showSexPickerButton = doc.getElementById('showSexPicker');
+          var sexResult = doc.getElementById('showSexPicker');
+          showSexPickerButton.addEventListener('tap', function (event) {
+            sexPicker.show(function (items) {
+              sexResult.innerText = items[0].text
+              //返回 false 可以阻止选择框的关闭
+              //return false;
+            });
+          }, false);
+
+        });
+
+
+      })(mui, document);
+    </script>
+
+</body>
+</html>
