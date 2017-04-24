@@ -56,7 +56,7 @@
     <div class="mui-input-row">
         <label style="width: 35px;"><img src="../images/login/reg-name.png" width="30px" height="30px"/></label>
         <label class="lable" style="width: 65px;">昵称</label>
-        <input type="text" placeholder="请输入"
+        <input id="nickname" type="text" placeholder="请输入"
                style="text-align: left;border:hidden;width: 60%;margin-top: 10px;"/>
     </div>
     <div class="mui-input-row">
@@ -70,13 +70,13 @@
         <label style="width: 35px;"><img src="../images/login/reg-workexperience.png" width="30px"
                                          height="30px"/></label>
         <label class="lable" style="width: 65px;">年龄</label>
-        <input type="text" placeholder="请输入"
+        <input id="age" type="text" placeholder="请输入"
                style="text-align: left;border:hidden;width: 60%;margin-top: 10px;"/>
     </div>
     <div class="mui-input-row">
         <label style="width: 35px;"><img src="../images/login/reg-email.png" width="30px" height="30px"/></label>
         <label class="lable" style="width: 65px;">邮箱</label>
-        <input type="text" placeholder="请输入"
+        <input id="email" type="text" placeholder="请输入"
                style="text-align: left;border:hidden;width: 60%;margin-top: 10px;"/>
     </div>
 
@@ -93,32 +93,45 @@
 <script src="../SUI Mobile/plugin/tests/vendor/jquery.min.js"></script>
 <script type="text/javascript">
       $(document).ready(function () {
+        var userInfo = JsInteractionEvent.getUserInfo();
+        var userInfoObj = JSON.parse(userInfo);
+        var nickname = $("#nickname");
+        var sex = $("#showSexPicker");
+        var age = $("#age");
+        var email = $("#email");
+        nickname.val(userInfoObj.nickname);
+        sex.text(userInfoObj.sex);
+        age.val(userInfoObj.age);
+        email.val(userInfoObj.email);
+        var sexValue = "";
+        (function ($, doc) {
+          $.init();
+          $.ready(function () {
+            //性别
+            var sexPicker = new $.PopPicker({
+              layer: 1
+            });
+            sexPicker.setData(sexData);
+            var showSexPickerButton = doc.getElementById('showSexPicker');
+            var sexResult = doc.getElementById('showSexPicker');
+            showSexPickerButton.addEventListener('tap', function (event) {
+              sexPicker.show(function (items) {
+                sexValue = sexResult.innerText = items[0].text;
+                //返回 false 可以阻止选择框的关闭
+                //return false;
+              });
+            }, false);
+          });
+        })(mui, document);
+
         $("#keep").click(function () {
-          window.location.href = "../base/main.html";
+          var result = JsInteractionEvent.updateUserInfo(nickname.val(), sexValue, age.val(), email.val());
+          if (result == true) {
+            alert("保存成功！");
+          }
         });
       });
-      (function ($, doc) {
-        $.init();
-        $.ready(function () {
-          //性别
-          var sexPicker = new $.PopPicker({
-            layer: 1
-          });
-          sexPicker.setData(sexData);
-          var showSexPickerButton = doc.getElementById('showSexPicker');
-          var sexResult = doc.getElementById('showSexPicker');
-          showSexPickerButton.addEventListener('tap', function (event) {
-            sexPicker.show(function (items) {
-              sexResult.innerText = items[0].text
-              //返回 false 可以阻止选择框的关闭
-              //return false;
-            });
-          }, false);
 
-        });
-
-
-      })(mui, document);
     </script>
 
 </body>

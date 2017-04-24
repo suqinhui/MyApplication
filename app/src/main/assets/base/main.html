@@ -146,7 +146,7 @@
                     <ul class="mui-table-view" id="select" type="button">
                         <li class="mui-table-view-cell"><span style=" height:30px; line-height: 30px;"><span
                                 class="mui-icon mui-icon-spinner-cycle mui-spin"></span>总积分</span>
-                            <a style="float: right;color: skyblue;" href="javascript:;">
+                            <a id="all_integration" style="float: right;color: skyblue;" href="javascript:;">
                                 <div style="padding-bottom: 5px;"></div>
                                 100</a>
                         </li>
@@ -156,13 +156,13 @@
                 <div class="mui-control-content mui-active ">
                     <ul class="mui-table-view ">
                         <li class="mui-table-view-cell ">
-                            <span class="mui-icon mui-icon-spinner-cycle mui-spin"></span>今日积分</span>
-                            <a style="float: right;color: skyblue;" href="javascript:;">
+                            <span class="mui-icon mui-icon-spinner-cycle mui-spin"></span><span>今日积分</span>
+                            <a id="today_integration" style="float: right;color: skyblue;" href="javascript:;">
                                 <div style="padding-bottom: 5px;"></div>
                                 100</a>
                         </li>
                         <!--<li class="mui-table-view-cell ">
-                            <a href="../post/collectPost.html#post " class="mui-navigate-right "><span class="mui-icon iconfont mui-icon-star "></span>我收藏的书本</a>
+                            <a href="../post/collectPost.html#post" class="mui-navigate-right "><span class="mui-icon iconfont mui-icon-star "></span>我收藏的书本</a>
                         </li>-->
                         <li class="mui-table-view-cell ">
                             <a href="../me/massage.html" class="mui-navigate-right "><span
@@ -171,7 +171,7 @@
                         <li class="mui-table-view-cell ">
                             <!--<button id='demo1' data-options='{}' class=" mui-navigate-right"><span class="mui-icon iconfont mui-icon mui-icon-spinner mui-spin "></span>定时读书</button>-->
                             <a id='demo5' data-options='{"type":"time"}' class="mui-navigate-right btn "><span
-                                    class="mui-icon iconfont mui-icon mui-icon-spinner mui-spin "></span>定时读书<span id='result'
+                                    class="mui-icon iconfont mui-icon mui-icon-spinner mui-spin "></span>定时读书<span id='timing'
                                                                                                                    style="margin-left: 50%"></span></a>
                         </li>
                     </ul>
@@ -253,25 +253,25 @@
         });
 
         //设置我页面
-//        var nickname = $("#nickname");
-        /*var s = {
-         "today_integration": 0,
-         "all_integration": 0,
-         "username": "admin",
-         "timing": "0",
-         "face_image": "0",
-         "nickname": "管理员",
-         "password": "admin"
-         };
-         alert(s.nickname);*/
         var userInfo = JsInteractionEvent.getUserInfo();
-        alert(JSON.parse(userInfo).nickname);
-//        nickname.html(JsInteractionEvent.getNickName());
+        var userInfoObj = JSON.parse(userInfo);
+        var nickname = $("#nickname");
+        nickname.html(userInfoObj.nickname);
+        var allIntegration = $("#all_integration");
+        allIntegration.html(userInfoObj.all_integration);
+        var todayIntegration = $("#today_integration");
+        todayIntegration.html(userInfoObj.today_integration);
+        var timing = $("#timing");
+        if (userInfoObj.timing != "0") {
+          timing.html(userInfoObj.timing);
+        }
+
+
       });
 
       //设置我页面
       (function ($) {
-        var result = $('#result')[0];
+        var result = $('#timing')[0];
         var btns = $('.btn');
         btns.each(function (i, btn) {
           btn.addEventListener('tap', function () {
@@ -295,6 +295,9 @@
                * rs.i 分（minutes 的第二个字母），用法同年
                */
               result.innerText = rs.text;
+              //将时间存到数据库
+              JsInteractionEvent.updateTiming(rs.text);
+
               /*
                * 返回 false 可以阻止选择框的关闭
                * return false;

@@ -34,9 +34,6 @@ public class LoginActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.webView);
         webSettings = webView.getSettings();
         dbManager = new DBManager(this);
-
-        String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
-        Log.i("info", "!!!!" + dbManager.dbGetUserInfo(username));
     }
 
     @SuppressLint("JavascriptInterface")
@@ -102,19 +99,46 @@ public class LoginActivity extends AppCompatActivity {
             return registerResult;
         }
 
-        //获取用户的昵称
-        @JavascriptInterface
-        public String getNickName() {
-            String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
-            return dbManager.dbGetNickName(username);
-        }
-
         //获取用户信息
         @JavascriptInterface
         public String getUserInfo() {
             String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
             return dbManager.dbGetUserInfo(username);
         }
+
+        @JavascriptInterface
+        //将设置的定时读书时间更新到数据库
+        public void updateTiming(String time) {
+            String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
+            dbManager.dbUpdateTiming(username, time);
+            Toast.makeText(LoginActivity.this, "设置成功!", Toast.LENGTH_SHORT).show();
+
+            //做闹钟功能
+
+
+        }
+
+        @JavascriptInterface
+        //修改个人信息
+        public boolean updateUserInfo(String nickname, String sex, String age, String email) {
+            boolean result = false;
+            Log.i("info", "!!!!" + nickname + " " + sex + " " + age + " " + email);
+            String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
+            if (nickname.equals("")) {
+                Toast.makeText(LoginActivity.this, "昵称不能为空!", Toast.LENGTH_SHORT).show();
+            } else if (sex.equals("请选择")) {
+                Toast.makeText(LoginActivity.this, "请选择性别!", Toast.LENGTH_SHORT).show();
+            } else if (age.equals("")) {
+                Toast.makeText(LoginActivity.this, "年龄不能为空!", Toast.LENGTH_SHORT).show();
+            } else if (email.equals("")) {
+                Toast.makeText(LoginActivity.this, "邮箱不能为空!", Toast.LENGTH_SHORT).show();
+            } else {
+                result = true;
+                dbManager.dbUpdateUserInfo(username, nickname, sex, age, email);
+            }
+            return result;
+        }
+
     }
 
     //按返回建不退出，保持后台运行
