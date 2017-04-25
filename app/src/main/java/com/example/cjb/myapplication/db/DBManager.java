@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.cjb.myapplication.activity.LoginActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,5 +78,93 @@ public class DBManager {
     //修改个人信息
     public void dbUpdateUserInfo(String username, String nickname, String sex, String age, String email) {
         db.execSQL("update account set nickname='" + nickname + "',sex='" + sex + "',age='" + age + "',email='" + email + "' where username='" + username + "'");
+    }
+
+    //获取书籍列表
+    public String dbGetBookList() {
+        Cursor cursor = db.rawQuery("select * from book_table", null);
+        JSONArray userArray = new JSONArray();
+        while (cursor.moveToNext()) {
+            try {
+                JSONObject userObject = new JSONObject();
+                userObject.put("book_name", cursor.getString(cursor.getColumnIndex("book_name")));
+                userObject.put("book_english_name", cursor.getString(cursor.getColumnIndex("book_english_name")));
+                userObject.put("author", cursor.getString(cursor.getColumnIndex("author")));
+                userObject.put("introduction", cursor.getString(cursor.getColumnIndex("introduction")));
+                userObject.put("years", cursor.getString(cursor.getColumnIndex("years")));
+                userObject.put("image", cursor.getString(cursor.getColumnIndex("image")));
+                userArray.put(userObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return userArray.toString();
+    }
+
+    //获取指定书籍信息
+    public String dbGetBookInfo(String bookEnglishName) {
+        Cursor cursor = db.rawQuery("select * from book_table where book_english_name='" + bookEnglishName + "'", null);
+        JSONObject bookObject = new JSONObject();
+        while (cursor.moveToNext()) {
+            try {
+                bookObject.put("book_name", cursor.getString(cursor.getColumnIndex("book_name")));
+                bookObject.put("book_english_name", cursor.getString(cursor.getColumnIndex("book_english_name")));
+                bookObject.put("author", cursor.getString(cursor.getColumnIndex("author")));
+                bookObject.put("introduction", cursor.getString(cursor.getColumnIndex("introduction")));
+                bookObject.put("years", cursor.getString(cursor.getColumnIndex("years")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return bookObject.toString();
+    }
+
+    //获取指定书籍的章节
+    public String dbGetBookChapter(String bookEnglishName) {
+        Cursor cursor = db.rawQuery("select * from book_chapter where book_english_name='" + bookEnglishName + "'", null);
+        JSONArray bookChapterArray = new JSONArray();
+        while (cursor.moveToNext()) {
+            try {
+                JSONObject bookChapterObject = new JSONObject();
+                bookChapterObject.put("book_english_name", cursor.getString(cursor.getColumnIndex("book_english_name")));
+                bookChapterObject.put("chapter_name", cursor.getString(cursor.getColumnIndex("chapter_name")));
+                bookChapterObject.put("chapter_id", cursor.getString(cursor.getColumnIndex("chapter_id")));
+                bookChapterObject.put("content", cursor.getString(cursor.getColumnIndex("content")));
+                bookChapterArray.put(bookChapterObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return bookChapterArray.toString();
+    }
+
+    //根据书籍英文名获取书籍的中文名
+    public String dbGetBookName(String bookEnglishName) {
+        String bookName = "";
+        Cursor cursor = db.rawQuery("select * from book_table where book_english_name='" + bookEnglishName + "'", null);
+        while (cursor.moveToNext()) {
+            bookName = cursor.getString(cursor.getColumnIndex("book_name"));
+        }
+        cursor.close();
+        return bookName;
+    }
+
+    //根据书籍英文名获取书籍的章节名，章节内容
+    public String dbGetChapterInfo(String bookEnglishName, String chapterId) {
+        JSONObject chapterInfo = new JSONObject();
+        Cursor cursor = db.rawQuery("select * from book_chapter where book_english_name='" + bookEnglishName + "' and chapter_id='" + chapterId + "'", null);
+        while (cursor.moveToNext()) {
+            try {
+                chapterInfo.put("chapter_name", cursor.getString(cursor.getColumnIndex("chapter_name")));
+                chapterInfo.put("content", cursor.getString(cursor.getColumnIndex("content")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return chapterInfo.toString();
     }
 }

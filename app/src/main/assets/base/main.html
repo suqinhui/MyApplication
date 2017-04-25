@@ -232,25 +232,27 @@
         });
 
         //设置书城页面
-        var slider = mui("#slider");
-        slider.slider({
-          interval: 1000
-        });
-        var table = document.body.querySelector('.mui-table-view');
-        for (var i = 0; i < 5; i++) {
-          var li = document.createElement('li');
-          li.className = 'mui-table-view-cell book_list';
-          li.innerHTML = '<div>' + '<div class="flex">' + '<img src="../images/1.png" alt="" style = "height:80px;width:80px"/>' + '<div class="flex-main" style="margin-left: 10px;">' + '<h4>' + '书名' + '</h4>' + '<p>' + '作者' + '</p>' + '<div class="fs-14" style="color: grade;" >' + ' ' + '<div class="fs-14" style="color: blue;">' + '年份' + '</div>' + '</div>' + '</div>' + '</div>';
-          table.appendChild(li);
-        }
         var search = $("#search");
         search.click(function () {
           window.location.href = "search.html";
         });
-        var book_list = $(".book_list");
-        book_list.click(function () {
-          window.location.href = "../book/book_info.html";
+        var slider = mui("#slider");
+        slider.slider({
+          interval: 1000
         });
+        var bookList = JsInteractionEvent.getBookList();
+        var bookListArray = JSON.parse(bookList);
+        //alert(bookListArray.length);
+        var table = document.body.querySelector('.mui-table-view');
+        for (var i = 0; i < bookListArray.length; i++) {
+          var li = document.createElement('li');
+          li.className = 'mui-table-view-cell ' + 'book_list';
+          var imageSrc = "../images/books/" + bookListArray[i].book_english_name + ".jpg";
+          var hrefSrc = "../book/book_info.html?book_english_name=" + bookListArray[i].book_english_name;
+          li.innerHTML = '<div>' + '<div class="flex"><a href = ' + hrefSrc + '>' + '<img src=' + imageSrc + ' alt="" style = "height:90px;width:80px"/>' + '<div class="flex-main" style="margin-left: 10px;">' + '<h4>' + bookListArray[i].book_name + '</h4>' + '<p>' + bookListArray[i].author + '</p>' + '<div class="fs-14" style="color: grade;" >' + ' ' + '<div class="fs-14" style="color: blue;">' + bookListArray[i].years + '</div>' + '</div>' + '</a></div>' + '</div>';
+          table.appendChild(li);
+        }
+
 
         //设置我页面
         var userInfo = JsInteractionEvent.getUserInfo();

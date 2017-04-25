@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.webView);
         webSettings = webView.getSettings();
         dbManager = new DBManager(this);
+        Log.i("info", "!!!!" + dbManager.dbGetBookChapter("crazy_java"));
     }
 
     @SuppressLint("JavascriptInterface")
@@ -138,6 +139,37 @@ public class LoginActivity extends AppCompatActivity {
             }
             return result;
         }
+
+        @JavascriptInterface
+        //获取书籍列表
+        public String getBookList() {
+            return dbManager.dbGetBookList();
+        }
+
+        @JavascriptInterface
+        //获取指定书籍信息
+        public String getBookInfo(String bookEnglishName) {
+            return dbManager.dbGetBookInfo(bookEnglishName);
+        }
+
+        @JavascriptInterface
+        //获取指定书籍的章节
+        public String getBookChapter(String bookEnglishName) {
+            return dbManager.dbGetBookChapter(bookEnglishName);
+        }
+
+        @JavascriptInterface
+        //根据书籍英文名获取书籍的中文名
+        public String getBookName(String bookEnglishName) {
+            return dbManager.dbGetBookName(bookEnglishName);
+        }
+
+        @JavascriptInterface
+        //根据书籍英文名，章节id获取书籍的章节名，章节内容
+        public String getChapterInfo(String bookEnglishName, String chapterId) {
+            return dbManager.dbGetChapterInfo(bookEnglishName, chapterId);
+        }
+
 
     }
 

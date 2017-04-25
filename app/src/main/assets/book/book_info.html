@@ -56,22 +56,19 @@
 
 <div class="mui-content" style="margin-bottom: 150px">
     <div class="aui-panel flex">
-        <img src="../images/login/reg-degree.png" alt="公司LOGO"/>
+        <img alt="公司LOGO" id="book_image" style="height:80px; width: 70px;"/>
         <div class="flex-main" style="margin-left: 10px;">
-            <h4>盗墓笔记</h4>
-            <h5>作者：<span>南派三叔</span></h5>
-            <div class="fs-14" style="color: red;height: 20px;">2013</div>
+            <h4 id="book_name"> </h4>
+            <h5>作者：<span id="book_author"> </span></h5>
+            <div class="fs-14" style="color: red;height: 20px;" id="book_year"> </div>
         </div>
     </div>
-
-
-    <div id="welfare" class="mui-row aui-panel panel2" style="line-height: 20px; ">
+    <div id="welfare" class="mui-row aui-panel panel2" style="line-height: 40px; ">
         <button class="welfare-color">冒险</button>
         　
         <button class="welfare-color">小说</button>
         <!--	<button class="welfare-color">恐怖</button>-->
     </div>
-
     <div id="post_descr" class="mui-row aui-panel">
         <div align="middle">
             <span class="mui-icon mui-icon-chatboxes-filled" style="color:#10cbe0 ;"></span>
@@ -79,7 +76,7 @@
 					   <b>本书介绍 </b>
 					</span>
         </div>
-        <span style="line-height: 40px;">《盗墓笔记》由中国友谊、时代文艺、上海文化于200记》由中国友谊、时代文艺、上海文化于200记》由中国友谊、时代文艺、上海文化于2007年-2011年陆续出版发行，作者南派三叔。[1] 《盗墓笔记捌：大结局（上、下）》于2011年12月19日上市，至此《盗墓笔记》系列完结，共出版实体书九本。《盗墓笔记》系列是南派三叔的代表作，其堪称近年来中国出版界的经典之作，获得百万读者狂热追捧。南派三叔也凭此作名满天下，跻身中国超级畅销书作家行列。2015年，《盗墓笔记》由欢瑞世纪影视传媒股份有限公司改编成为网络剧[2]  。2016年11月，《盗墓笔记》荣登2016中国泛娱乐指数盛典“中国IP价值榜-网络文学榜top10”[3]</span>
+        <span style="line-height: 40px;" id="book_introduction"> </span>
         <br><br><br><br><br>
     </div>
 </div>
@@ -90,10 +87,37 @@
 <script src="../js/util.js"></script>
 <script src="../SUI Mobile/plugin/tests/vendor/jquery.min.js"></script>
 <script type="text/javascript">
-      var beginRead = document.getElementById("begin_read");
-      beginRead.addEventListener("click", function () {
-        window.location.href = "book_chapter.html";
+      $(document).ready(function () {
+        //用来获取前一个页面传递过来的数据
+        var GetQueryString = function (name) {
+          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+          var r = window.location.search.substr(1).match(reg);
+          if (r != null) return unescape(r[2]);
+          return null;
+        };
+        var bookEnglishName = GetQueryString('book_english_name'); //获取页面中的
+        var bookInfo = JsInteractionEvent.getBookInfo(bookEnglishName);
+        var bookInfoObj = JSON.parse(bookInfo);
+        var bookImage = $("#book_image");
+        var bookName = $("#book_name");
+        var bookAuthor = $("#book_author");
+        var bookYear = $("#book_year");
+        var bookIntroduction = $("#book_introduction");
+        var bookImageSrc = "../images/books/" + bookInfoObj.book_english_name + ".jpg";
+        bookImage.attr('src', bookImageSrc);
+        bookName.html(bookInfoObj.book_name);
+        bookAuthor.html(bookInfoObj.author);
+        bookYear.html(bookInfoObj.years);
+        bookIntroduction.html(bookInfoObj.introduction);
+        var beginRead = document.getElementById("begin_read");
+        beginRead.addEventListener("click", function () {
+          window.location.href = "book_chapter.html?book_english_name=" + bookInfoObj.book_english_name;
+        });
+        //收藏动作。。。
+
+
       });
+
     </script>
 </body>
 
