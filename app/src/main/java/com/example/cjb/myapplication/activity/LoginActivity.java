@@ -1,7 +1,6 @@
 package com.example.cjb.myapplication.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initEvent() {
         webSettings.setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
-        webView.loadUrl("file:///android_asset/base/login.html");
+        webView.loadUrl("file:///android_asset/base/main.html");
         ////设置本地调用对象及其接口
         webView.addJavascriptInterface(new JsInteraction(), "JsInteractionEvent");
         //设置不用系统浏览器打开,直接显示在当前Webview
@@ -168,6 +167,12 @@ public class LoginActivity extends AppCompatActivity {
         //根据书籍英文名，章节id获取书籍的章节名，章节内容
         public String getChapterInfo(String bookEnglishName, String chapterId) {
             return dbManager.dbGetChapterInfo(bookEnglishName, chapterId);
+        }
+
+        @JavascriptInterface
+        //根据书籍英文名，章节id获取问题列表
+        public String getChpaterQuestion(String bookEnglishName, String chapterId) {
+            return dbManager.dbGetChpaterQuestion(bookEnglishName, chapterId);
         }
 
 

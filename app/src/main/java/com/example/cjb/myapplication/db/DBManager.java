@@ -167,4 +167,28 @@ public class DBManager {
         cursor.close();
         return chapterInfo.toString();
     }
+
+    //根据书籍英文名，章节id获取问题列表
+    public String dbGetChpaterQuestion(String bookEnglishName, String chapterId) {
+        Cursor cursor = db.rawQuery("select * from question where book_english_name='" + bookEnglishName + "' and chapter_id='" + chapterId + "'", null);
+        JSONArray questionArray = new JSONArray();
+        while (cursor.moveToNext()) {
+            try {
+                JSONObject questionObject = new JSONObject();
+                questionObject.put("book_english_name", cursor.getString(cursor.getColumnIndex("book_english_name")));
+                questionObject.put("chapter_id", cursor.getString(cursor.getColumnIndex("chapter_id")));
+                questionObject.put("question_content", cursor.getString(cursor.getColumnIndex("question_content")));
+                questionObject.put("answer_a", cursor.getString(cursor.getColumnIndex("answer_a")));
+                questionObject.put("answer_b", cursor.getString(cursor.getColumnIndex("answer_b")));
+                questionObject.put("answer_c", cursor.getString(cursor.getColumnIndex("answer_c")));
+                questionObject.put("answer_d", cursor.getString(cursor.getColumnIndex("answer_d")));
+                questionObject.put("right_answer", cursor.getString(cursor.getColumnIndex("right_answer")));
+                questionArray.put(questionObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return questionArray.toString();
+    }
 }
