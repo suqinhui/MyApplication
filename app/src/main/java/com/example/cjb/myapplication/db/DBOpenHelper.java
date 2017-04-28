@@ -20,6 +20,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL("create table book_chapter(book_english_name varchar(20) not null,chapter_name varchar(20) not null,chapter_id varchar(20) not null,content text not null)");
         //问题表
         db.execSQL("create table question(book_english_name varchar(20) not null,chapter_id varchar(20) not null,question_content text not null,answer_a varchar(100) not null,answer_b varchar(100) not null,answer_c varchar(100) not null,answer_d varchar(100) not null,right_answer varchar(100) not null)");
+        //用户是否回答过该章节问题表
+        db.execSQL("create table answer_table(username varchar(20) not null,book_english_name varchar(20) not null,chapter_id varchar(20) not null)");
         //用户表
         db.execSQL("create table account(username varchar(20) PRIMARY KEY not null,password varchar(20) not null,nickname varchar(20) not null,sex varchar(20) not null,age varchar(20) not null,email varchar(20) not null,all_integration varchar(20) not null,today_integration varchar(20) not null,timing varchar(20) not null,face_image varchar(255) not null)");
         //插入一个管理员用户
@@ -2300,11 +2302,11 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
         //插入问题表
         //疯狂java
-        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','1','JAVA所定义的版本中不包括：','A、JAVA2 EE','B、JAVA2 Card','C、JAVA2 ME','D、JAVA2 HE','D、JAVA2 HE')");
-        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','1','下列说法正确的是：','A、JAVA程序的main方法必须写在类里面','B、JAVA程序中可以有多个main方法','C、JAVA程序中类名必须与文件名一样','D、JAVA程序的main方法中如果只有一条语句，可以不用{}(大括号)括起来','A、JAVA程序的main方法必须写在类里面')");
-        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','1','变量命名规范说法正确的是：','A、变量由字母、下划线、数字、$符号随意组成；','B、变量不能以数字作为开头；','C、A和a在java中是同一个变量；','D、不同类型的变量，可以起相同的名字；','B、变量不能以数字作为开头；')");
-        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','1','为一个boolean类型变量赋值时，可以使用:','A、boolean = 1;','B、boolean a = (9 >= 10);','C、boolean a=\"真\";','D、boolean a = = false;','B、boolean a = (9 >= 10);')");
-        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','1','以下不是合法的标识符的是：','A、STRING','B、x3x;','C、void','D、de$f','C、void')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','1','JAVA所定义的版本中不包括：','A、JAVA2 EE','B、JAVA2 Card','C、JAVA2 ME','D、JAVA2 HE','D')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','1','下列说法正确的是：','A、JAVA程序的main方法必须写在类里面','B、JAVA程序中可以有多个main方法','C、JAVA程序中类名必须与文件名一样','D、JAVA程序的main方法中如果只有一条语句，可以不用{}(大括号)括起来','A')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','1','变量命名规范说法正确的是：','A、变量由字母、下划线、数字、$符号随意组成；','B、变量不能以数字作为开头；','C、A和a在java中是同一个变量；','D、不同类型的变量，可以起相同的名字；','B')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','1','为一个boolean类型变量赋值时，可以使用:','A、boolean = 1;','B、boolean a = (9 >= 10);','C、boolean a=\"真\";','D、boolean a = = false;','B')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','1','以下不是合法的标识符的是：','A、STRING','B、x3x;','C、void','D、de$f','C')");
 
         db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','2','表达式(11+3*8)/4%3的值是：','A、31','B、0','C、1','D、2','D')");
         db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','2','以下表达式不可以作为循环条件的是：','A、i++;','B、i>5;','C、bEqual = str.equals(\"q\");','D、count = = i;','A')");
@@ -2312,7 +2314,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','2','下列值不为true的表达式有：','A、\"john\" = = \"john\"','B、\"john\".equals(\"john\")','C、\"john\" = \"john\"','D、\"john\".equals(new String(\"john\"))','C')");
         db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','2','下面有关for循环的描述正确的是：','A、for循环体语句中，可以包含多条语句，但要用大括号括起来','B、for循环只能用于循环次数已经确定的情况','C、在for循环中，不能使用break语句跳出循环','D、for循环是先执行循环体语句，后进行条件判断','A')");
 
-        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','3','对象的特征在类中表示为变量，称为类的：','A、对象','B、属性','C、方法','D、数据类型','B、属性')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','3','对象的特征在类中表示为变量，称为类的：','A、对象','B、属性','C、方法','D、数据类型','B')");
         db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','3','在java中下列关于自动类型转换说法正确的是：','A、基本数据类型和String相加结果一定是字符串型','B、char类型和int类型相加结果一定是字符','C、double类型可以自动转换为int','D、char + int + double +\"\" 结果一定是double；','A')");
         db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','3','能够对数组正确初始化（或者是默认初始化）的是：','A、int[] a;','B、a = {1, 2, 3, 4, 5};','C、int[] a = new int[5]{1, 2, 3, 4, 5};','D、int[] a = new int[5];','D')");
         db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','3','在Java中,关于构造方法，下列说法错误的是：','A、构造方法的名称必须与类名相同','B、构造方法可以带参数','C、构造方法不可以重载','D、构造方法绝对不能有返回值','C')");

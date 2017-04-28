@@ -191,4 +191,27 @@ public class DBManager {
         cursor.close();
         return questionArray.toString();
     }
+
+    //判断用户是否回答过该章节的问题
+    public boolean dbIsAnsweredChapter(String username, String bookEnglishName, String chapterId) {
+        Cursor cursor = db.rawQuery("select * from answer_table where username='" + username + "' and book_english_name='" + bookEnglishName + "' and chapter_id='" + chapterId + "'", null);
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            return false;
+        } else {
+            cursor.close();
+            return true;
+        }
+    }
+
+    //根据书籍英文名，章节id插入回答问题信息
+    public void dbInsertIntoAnswerTable(String username, String bookEnglishName, String chapterId) {
+        db.execSQL("insert into answer_table(username,book_english_name,chapter_id)values('" + username + "','" + bookEnglishName + "','" + chapterId + "')");
+    }
+
+    //更新用户的总积分跟今日积分
+    public void dbUpdateUserIntegration(String username, String allIntegration, String todayIntegration) {
+        db.execSQL("update account set all_integration='" + allIntegration + "',today_integration='" + todayIntegration + "' where username='" + username + "'");
+    }
+
 }

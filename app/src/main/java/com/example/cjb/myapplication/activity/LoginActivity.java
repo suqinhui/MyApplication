@@ -1,6 +1,11 @@
 package com.example.cjb.myapplication.activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,12 +19,19 @@ import android.widget.Toast;
 
 import com.example.cjb.myapplication.R;
 import com.example.cjb.myapplication.db.DBManager;
+import com.example.cjb.myapplication.receiver.AlarmBroadcastReceiver;
 import com.example.cjb.myapplication.util.SharedPreferencesUtils;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
     private WebView webView;
     private WebSettings webSettings;
     private DBManager dbManager;
+    private Calendar calendar = Calendar.getInstance(Locale.CHINESE);
+    private AlarmManager alarmManager;
+    private Uri ringUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,18 +41,34 @@ public class LoginActivity extends AppCompatActivity {
         initEvent();
     }
 
+    @Override
+    protected void onStop() {
+        //app返回后台调用的方法
+        super.onStop();
+        SharedPreferencesUtils.setParam(this, "inAPP", "0");
+        Log.i("info", "!!!!out");
+    }
+
+    @Override
+    protected void onResume() {
+        //app返回前台调用的方法
+        super.onResume();
+        SharedPreferencesUtils.setParam(this, "inAPP", "1");
+        Log.i("info", "!!!!in");
+    }
+
     private void initView() {
         webView = (WebView) findViewById(R.id.webView);
         webSettings = webView.getSettings();
         dbManager = new DBManager(this);
-        Log.i("info", "!!!!" + dbManager.dbGetBookChapter("crazy_java"));
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
 
     @SuppressLint("JavascriptInterface")
     private void initEvent() {
         webSettings.setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
-        webView.loadUrl("file:///android_asset/base/main.html");
+        webView.loadUrl("file:///android_asset/base/login.html");
         ////设置本地调用对象及其接口
         webView.addJavascriptInterface(new JsInteraction(), "JsInteractionEvent");
         //设置不用系统浏览器打开,直接显示在当前Webview
@@ -111,11 +139,20 @@ public class LoginActivity extends AppCompatActivity {
         public void updateTiming(String time) {
             String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
             dbManager.dbUpdateTiming(username, time);
-            Toast.makeText(LoginActivity.this, "设置成功!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "设置成功！", Toast.LENGTH_SHORT).show();
 
             //做闹钟功能
-
-
+            Log.i("info", "!!!!time" + time.substring(0, 2) + " " + time.substring(3, 5));
+            int hour = Integer.parseInt(time.substring(0, 2));
+            int minute = Integer.parseInt(time.substring(3, 5));
+            calendar.set(Calendar.HOUR, hour);
+            calendar.set(Calendar.MINUTE, minute);
+            Intent intent = new Intent();
+            intent.setClass(LoginActivity.this, AlarmBroadcastReceiver.class);
+            intent.putExtra("msg", "Time For Read!");
+            intent.putExtra("ringURI", ringUri.toString());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, 0, intent, 0);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
 
         @JavascriptInterface
@@ -173,6 +210,27 @@ public class LoginActivity extends AppCompatActivity {
         //根据书籍英文名，章节id获取问题列表
         public String getChpaterQuestion(String bookEnglishName, String chapterId) {
             return dbManager.dbGetChpaterQuestion(bookEnglishName, chapterId);
+        }
+
+        @JavascriptInterface
+        //判断用户是否回答过该章节的问题
+        public boolean isAnsweredChapter(String bookEnglishName, String chapterId) {
+            String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
+            return dbManager.dbIsAnsweredChapter(username, bookEnglishName, chapterId);
+        }
+
+        @JavascriptInterface
+        //根据书籍英文名，章节id插入回答问题信息
+        public void insertIntoAnswerTable(String bookEnglishName, String chapterId) {
+            String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
+            dbManager.dbInsertIntoAnswerTable(username, bookEnglishName, chapterId);
+        }
+
+        @JavascriptInterface
+        //更新用户的总积分跟今日积分
+        public void updateUserIntegration(String allIntegration, String todayIntegration) {
+            String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
+            dbManager.dbUpdateUserIntegration(username, allIntegration, todayIntegration);
         }
 
 
