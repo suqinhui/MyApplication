@@ -263,6 +263,12 @@
         allIntegration.html(userInfoObj.all_integration);
         var todayIntegration = $("#today_integration");
         todayIntegration.html(userInfoObj.today_integration);
+        //设置定时任务，每秒获取用户的今日积分
+        window.setInterval(function () {
+          var userInfoNew = JsInteractionEvent.getUserInfo();
+          var userInfoObjNew = JSON.parse(userInfoNew);
+          todayIntegration.html(userInfoObjNew.today_integration);
+        }, 1000);
         var timing = $("#timing");
         if (userInfoObj.timing != "0") {
           timing.html(userInfoObj.timing);

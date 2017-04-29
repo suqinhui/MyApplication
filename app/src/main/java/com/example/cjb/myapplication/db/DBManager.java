@@ -214,4 +214,9 @@ public class DBManager {
         db.execSQL("update account set all_integration='" + allIntegration + "',today_integration='" + todayIntegration + "' where username='" + username + "'");
     }
 
+    //清空指定用户的今日积分
+    public void dbResetUserTodayIntegration() {
+        db.execSQL("update account set today_integration='0'");
+    }
+
 }

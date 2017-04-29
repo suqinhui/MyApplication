@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.example.cjb.myapplication.receiver.AlarmBroadcastReceiver;
 import com.example.cjb.myapplication.util.SharedPreferencesUtils;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
@@ -32,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private Calendar calendar = Calendar.getInstance(Locale.CHINESE);
     private AlarmManager alarmManager;
     private Uri ringUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         initView();
         initEvent();
+        initTimeTask();//初始化定时任务，判断是否需要清空今日积分
     }
 
     @Override
@@ -63,6 +67,27 @@ public class LoginActivity extends AppCompatActivity {
         dbManager = new DBManager(this);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
+
+    //初始化定时任务，判断是否需要清空今日积分
+    private void initTimeTask() {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                //要做的事情
+                String newTime = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                String oldTime = SharedPreferencesUtils.getParam(LoginActivity.this, "oldTime", "").toString();
+                if (!newTime.equals(oldTime)) {
+                    //清空今日积分
+                    dbManager.dbResetUserTodayIntegration();
+                }
+                handler.postDelayed(this, 1000);
+                SharedPreferencesUtils.setParam(LoginActivity.this, "oldTime", String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)));
+            }
+        };
+        handler.postDelayed(runnable, 1000);//每两秒执行一次runnable
+    }
+
 
     @SuppressLint("JavascriptInterface")
     private void initEvent() {
