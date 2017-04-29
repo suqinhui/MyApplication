@@ -22,40 +22,44 @@
         </form>
     </div>
 </header>
-<div class="mui-content">
-    <div class="aui-panel-title" style="padding-left: 10px;margin-top: 15px;">热搜推荐</div>
-    <div class="aui-panel flex">
-        <div class="flex-main">
-
-            <button type="button" style="color: #3498db; margin:2px;">鬼吹灯</button>
-            <button type="button" style="color: #3498db; margin: 2px;">JAVA入门基础</button>
-            <button type="button" style="color: #3498db; margin: 2px;">天才在左，疯子在又</button>
-        </div>
-    </div>
-
-    <div class="aui-panel-title" style="padding-left: 10px; margin-top: 15px;">搜索历史</div>
-    <div class="aui-panel">
-        <ul class="mui-table-view">
-            <a href="search_ee.html">
-                <li class=" mui-table-view-cell" style="color: black; padding-left: 20px;">救赎</li>
-                <li class="mui-table-view-cell" style="color: black; padding-left: 20px;">追风筝的人</li>
-                <li class="mui-table-view-cell" style="color: black; padding-left: 20px;">杉杉来了</li>
-                <!--<li class="mui-table-view-cell" style="color: black; padding-left: 20px;">j2ee</li>-->
-            </a>
-        </ul>
-        <div class="mui-table-view-cell" style="color: darkgray; text-align: center; font-size: 20px;">
-            <a href="">清空搜索历史</a>
-        </div>
-
-    </div>
-
+<div style="margin-top: 45px">
+    <!--数据列表-->
+    <ul id="search_result" class="mui-table-view mui-table-view-chevron">
+    </ul>
 </div>
 <script src="../js/mui.min.js"></script>
 <script src="../js/util.js"></script>
 <script src="../SUI Mobile/plugin/tests/vendor/jquery.min.js"></script>
 <script>
       $(document).ready(function () {
-
+        var search = $("#search");
+        var searchResult = $("#search_result");
+//        alert(search.val());
+        //200毫秒执行一次获取数据库信息，为了返回搜索页面可以保存搜索记录
+        window.setInterval(function () {
+          if (search.val().length != 0) {
+            searchResult.show();
+            var bookList = JsInteractionEvent.getSearchBookList(search.val());
+            var bookListArray = JSON.parse(bookList);
+            //alert(bookListArray.length);
+            //清空上一次搜索记录
+            searchResult.html("");
+            var table = document.body.querySelector('.mui-table-view.mui-table-view-chevron');
+            for (var i = 0; i < bookListArray.length; i++) {
+              var li = document.createElement('li');
+              li.className = 'mui-table-view-cell ' + 'book_list';
+              var imageSrc = "../images/books/" + bookListArray[i].book_english_name + ".jpg";
+              var hrefSrc = "../book/book_info.html?book_english_name=" + bookListArray[i].book_english_name;
+              li.innerHTML = '<div>' + '<div class="flex"><a href = ' + hrefSrc + '>' + '<img src=' + imageSrc + ' alt="" style = "height:90px;width:80px"/>' + '<div class="flex-main" style="margin-left: 10px;">' + '<h4>' + bookListArray[i].book_name + '</h4>' + '<p>' + bookListArray[i].author + '</p>' + '<div class="fs-14" style="color: grade;" >' + ' ' + '<div class="fs-14" style="color: blue;">' + bookListArray[i].years + '</div>' + '</div>' + '</a></div>' + '</div>';
+              table.appendChild(li);
+            }
+          } else {
+            searchResult.hide();
+            searchResult.html("");
+          }
+        }, 200);
+        /*search.bind("input propertychange", function () {
+        })*/
       });
     </script>
 </body>

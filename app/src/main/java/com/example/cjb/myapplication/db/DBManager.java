@@ -4,8 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 
 import com.example.cjb.myapplication.activity.LoginActivity;
+import com.example.cjb.myapplication.util.SharedPreferencesUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,23 +85,68 @@ public class DBManager {
     //获取书籍列表
     public String dbGetBookList() {
         Cursor cursor = db.rawQuery("select * from book_table", null);
-        JSONArray userArray = new JSONArray();
+        JSONArray bookArray = new JSONArray();
         while (cursor.moveToNext()) {
             try {
-                JSONObject userObject = new JSONObject();
-                userObject.put("book_name", cursor.getString(cursor.getColumnIndex("book_name")));
-                userObject.put("book_english_name", cursor.getString(cursor.getColumnIndex("book_english_name")));
-                userObject.put("author", cursor.getString(cursor.getColumnIndex("author")));
-                userObject.put("introduction", cursor.getString(cursor.getColumnIndex("introduction")));
-                userObject.put("years", cursor.getString(cursor.getColumnIndex("years")));
-                userObject.put("image", cursor.getString(cursor.getColumnIndex("image")));
-                userArray.put(userObject);
+                JSONObject bookObject = new JSONObject();
+                bookObject.put("book_name", cursor.getString(cursor.getColumnIndex("book_name")));
+                bookObject.put("book_english_name", cursor.getString(cursor.getColumnIndex("book_english_name")));
+                bookObject.put("author", cursor.getString(cursor.getColumnIndex("author")));
+                bookObject.put("introduction", cursor.getString(cursor.getColumnIndex("introduction")));
+                bookObject.put("years", cursor.getString(cursor.getColumnIndex("years")));
+                bookObject.put("image", cursor.getString(cursor.getColumnIndex("image")));
+                bookArray.put(bookObject);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         cursor.close();
-        return userArray.toString();
+        return bookArray.toString();
+    }
+
+    //根据搜索关键词获取书籍列表
+    public String dbGetSearchBookList(String searchKey) {
+        Cursor cursor = db.rawQuery("select * from book_table where book_name like '%" + searchKey + "%'", null);
+        JSONArray bookArray = new JSONArray();
+        while (cursor.moveToNext()) {
+            try {
+                JSONObject bookObject = new JSONObject();
+                bookObject.put("book_name", cursor.getString(cursor.getColumnIndex("book_name")));
+                bookObject.put("book_english_name", cursor.getString(cursor.getColumnIndex("book_english_name")));
+                bookObject.put("author", cursor.getString(cursor.getColumnIndex("author")));
+                bookObject.put("introduction", cursor.getString(cursor.getColumnIndex("introduction")));
+                bookObject.put("years", cursor.getString(cursor.getColumnIndex("years")));
+                bookObject.put("image", cursor.getString(cursor.getColumnIndex("image")));
+                bookArray.put(bookObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return bookArray.toString();
+    }
+
+    @JavascriptInterface
+    //判断用户是否收藏过某本书
+    public boolean dbIsCollected(String username, String bookEnglishName) {
+        Cursor cursor = db.rawQuery("select * from user_collect where username='" + username + "' and book_english_name='" + bookEnglishName + "'", null);
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            return false;
+        } else {
+            cursor.close();
+            return true;
+        }
+    }
+
+    //删除用户收藏书籍记录
+    public void dbDeleteCollect(String username, String bookEnglishName) {
+        db.execSQL("delete from user_collect where username='" + username + "' and book_english_name='" + bookEnglishName + "'");
+    }
+
+    //向用户收藏书籍表插入信息
+    public void dbInsertIntoUserCollect(String username, String bookName, String bookEnglishName) {
+        db.execSQL("insert into user_collect(username,book_name,book_english_name)values('" + username + "','" + bookName + "','" + bookEnglishName + "')");
     }
 
     //获取指定书籍信息
@@ -169,7 +216,7 @@ public class DBManager {
     }
 
     //根据书籍英文名，章节id获取问题列表
-    public String dbGetChpaterQuestion(String bookEnglishName, String chapterId) {
+    public String dbGetChapterQuestion(String bookEnglishName, String chapterId) {
         Cursor cursor = db.rawQuery("select * from question where book_english_name='" + bookEnglishName + "' and chapter_id='" + chapterId + "'", null);
         JSONArray questionArray = new JSONArray();
         while (cursor.moveToNext()) {
@@ -208,6 +255,26 @@ public class DBManager {
     public void dbInsertIntoAnswerTable(String username, String bookEnglishName, String chapterId) {
         db.execSQL("insert into answer_table(username,book_english_name,chapter_id)values('" + username + "','" + bookEnglishName + "','" + chapterId + "')");
     }
+
+    //获取用户收藏书籍列表
+    public String dbGetUserCollectBook(String username) {
+        Cursor cursor = db.rawQuery("select * from user_collect where username='" + username + "'", null);
+        JSONArray bookCollectArray = new JSONArray();
+        while (cursor.moveToNext()) {
+            try {
+                JSONObject bookCollectObject = new JSONObject();
+                bookCollectObject.put("username", cursor.getString(cursor.getColumnIndex("username")));
+                bookCollectObject.put("book_name", cursor.getString(cursor.getColumnIndex("book_name")));
+                bookCollectObject.put("book_english_name", cursor.getString(cursor.getColumnIndex("book_english_name")));
+                bookCollectArray.put(bookCollectObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return bookCollectArray.toString();
+    }
+
 
     //更新用户的总积分跟今日积分
     public void dbUpdateUserIntegration(String username, String allIntegration, String todayIntegration) {

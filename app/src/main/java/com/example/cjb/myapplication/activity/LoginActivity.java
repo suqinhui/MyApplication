@@ -66,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
         webSettings = webView.getSettings();
         dbManager = new DBManager(this);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
+        Log.i("info","!!!!!!!!!!"+dbManager.dbGetUserCollectBook(username));
     }
 
     //初始化定时任务，判断是否需要清空今日积分
@@ -93,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initEvent() {
         webSettings.setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
-        webView.loadUrl("file:///android_asset/base/login.html");
+        webView.loadUrl("file:///android_asset/base/main.html");
         ////设置本地调用对象及其接口
         webView.addJavascriptInterface(new JsInteraction(), "JsInteractionEvent");
         //设置不用系统浏览器打开,直接显示在当前Webview
@@ -208,9 +210,38 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         @JavascriptInterface
+        //根据搜索关键词获取书籍列表
+        public String getSearchBookList(String searchKey) {
+            return dbManager.dbGetSearchBookList(searchKey);
+        }
+
+        @JavascriptInterface
         //获取指定书籍信息
         public String getBookInfo(String bookEnglishName) {
             return dbManager.dbGetBookInfo(bookEnglishName);
+        }
+
+        @JavascriptInterface
+        //判断用户是否收藏过某本书
+        public boolean isCollected(String bookEnglishName) {
+            String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
+            return dbManager.dbIsCollected(username, bookEnglishName);
+        }
+
+        @JavascriptInterface
+        //删除用户收藏书籍记录
+        public void deleteCollect(String bookEnglishName) {
+            String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
+            dbManager.dbDeleteCollect(username, bookEnglishName);
+            Toast.makeText(LoginActivity.this, "取消收藏成功！", Toast.LENGTH_SHORT).show();
+        }
+
+        @JavascriptInterface
+        //向用户收藏书籍表插入信息
+        public void insertIntoUserCollect(String bookName, String bookEnglishName) {
+            String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
+            dbManager.dbInsertIntoUserCollect(username, bookName, bookEnglishName);
+            Toast.makeText(LoginActivity.this, "收藏成功！", Toast.LENGTH_SHORT).show();
         }
 
         @JavascriptInterface
@@ -233,8 +264,8 @@ public class LoginActivity extends AppCompatActivity {
 
         @JavascriptInterface
         //根据书籍英文名，章节id获取问题列表
-        public String getChpaterQuestion(String bookEnglishName, String chapterId) {
-            return dbManager.dbGetChpaterQuestion(bookEnglishName, chapterId);
+        public String getChapterQuestion(String bookEnglishName, String chapterId) {
+            return dbManager.dbGetChapterQuestion(bookEnglishName, chapterId);
         }
 
         @JavascriptInterface
@@ -252,12 +283,18 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         @JavascriptInterface
+        //获取用户收藏书籍列表
+        public String getUserCollectBook() {
+            String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
+            return dbManager.dbGetUserCollectBook(username);
+        }
+
+        @JavascriptInterface
         //更新用户的总积分跟今日积分
         public void updateUserIntegration(String allIntegration, String todayIntegration) {
             String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
             dbManager.dbUpdateUserIntegration(username, allIntegration, todayIntegration);
         }
-
 
     }
 

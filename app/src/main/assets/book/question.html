@@ -190,7 +190,7 @@
       var bookChapterId = GetQueryString('chapter_id');
 //      alert(bookEnglishName + " " + bookChapterId);
       //根据书籍英文名、章节id获取章节问题
-      var questionInfo = JsInteractionEvent.getChpaterQuestion(bookEnglishName, bookChapterId);
+      var questionInfo = JsInteractionEvent.getChapterQuestion(bookEnglishName, bookChapterId);
       var questionInfoArray = JSON.parse(questionInfo);
 
       var questionContent1 = $("#question_content1");

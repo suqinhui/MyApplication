@@ -42,25 +42,19 @@
 
 <nav class="mui-bar mui-bar-tab" style="margin-top: 10px;">
 
-    <input type="button" value="收藏本文"
+    <input id="collect_book" type="button" value="收藏本文"
            style="width: 50%; height: 50px;border: none; color: dodgerblue; font-size: 16px">
     <input type="button" value="开始阅读" id="begin_read"
            style="width: 50%; height: 50px;border: none;background: dodgerblue; color: #FFFFFF;font-size: 16px">
-    <!--<a id="defaultTab" class="mui-tab-item mui-active"> <span class="mui-icon mui-icon-star"></span>
-      <p style="color: dodgerblue;">收藏本书</p>
-    </a>
-    <a class="mui-tab-item" style="background-color: deepskyblue;" id="begin_read"> <span
-            class="mui-icon mui-icon-paperplane devile-color"></span> <span
-            class="mui-tab-label devile-color">开始阅读</span> </a>-->
 </nav>
 
 <div class="mui-content" style="margin-bottom: 150px">
     <div class="aui-panel flex">
         <img alt="公司LOGO" id="book_image" style="height:80px; width: 70px;"/>
         <div class="flex-main" style="margin-left: 10px;">
-            <h4 id="book_name"> </h4>
+            <h4 id="book_name"></h4>
             <h5>作者：<span id="book_author"> </span></h5>
-            <div class="fs-14" style="color: red;height: 20px;" id="book_year"> </div>
+            <div class="fs-14" style="color: red;height: 20px;" id="book_year"></div>
         </div>
     </div>
     <div id="welfare" class="mui-row aui-panel panel2" style="line-height: 40px; ">
@@ -114,8 +108,23 @@
           window.location.href = "book_chapter.html?book_english_name=" + bookInfoObj.book_english_name;
         });
         //收藏动作。。。
-
-
+        var collectBook = $("#collect_book");
+        var isCollected = JsInteractionEvent.isCollected(bookEnglishName);
+        if (isCollected == true) {
+          collectBook.val("取消收藏");
+        } else {
+          collectBook.val("收藏本文");
+        }
+        collectBook.click(function () {
+          var isCollectedNew = JsInteractionEvent.isCollected(bookEnglishName);
+          if (isCollectedNew == true) {
+            collectBook.val("收藏本文");
+            JsInteractionEvent.deleteCollect(bookEnglishName);
+          } else {
+            collectBook.val("取消收藏");
+            JsInteractionEvent.insertIntoUserCollect(bookInfoObj.book_name, bookEnglishName);
+          }
+        });
       });
 
     </script>

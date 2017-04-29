@@ -24,6 +24,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL("create table answer_table(username varchar(20) not null,book_english_name varchar(20) not null,chapter_id varchar(20) not null)");
         //用户表
         db.execSQL("create table account(username varchar(20) PRIMARY KEY not null,password varchar(20) not null,nickname varchar(20) not null,sex varchar(20) not null,age varchar(20) not null,email varchar(20) not null,all_integration varchar(20) not null,today_integration varchar(20) not null,timing varchar(20) not null,face_image varchar(255) not null)");
+        //用户收藏书籍表
+        db.execSQL("create table user_collect(username varchar(20) not null,book_name varchar(20)not null,book_english_name varchar(20) not null)");
+
         //插入一个管理员用户
         db.execSQL("insert into account(username,password,nickname,sex,age,email,all_integration,today_integration,timing,face_image)values('admin','admin','管理员','请选择','','','0','0','0','')");
 

@@ -1,34 +1,34 @@
 package com.example.cjb.myapplication.activity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.TimePickerDialog;
-import android.content.Intent;
-import android.database.Cursor;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TimePicker;
-import android.widget.Toast;
-
-import com.example.cjb.myapplication.R;
-import com.example.cjb.myapplication.receiver.AlarmBroadcastReceiver;
-import com.example.cjb.myapplication.util.SharedPreferencesUtils;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class AlarmActivity extends AppCompatActivity {
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Intent;
+import android.database.Cursor;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TimePicker;
+
+import com.example.cjb.myapplication.R;
+import com.example.cjb.myapplication.receiver.AlarmBroadcastReceiver;
+
+public class AlarmActivity extends Activity {
     private static final String TAG = "AlarmActivity";
     AlarmManager alarmManager;
-    Calendar calendar = Calendar.getInstance();
+    Calendar calendar = Calendar.getInstance(Locale.CHINESE);
     Button setTime;
     Button setRing;
     Button setOver;
@@ -47,36 +47,20 @@ public class AlarmActivity extends AppCompatActivity {
         setTimeAndRing();
     }
 
-    @Override
-    protected void onStop() {
-        //app返回后台调用的方法
-        super.onStop();
-        SharedPreferencesUtils.setParam(this, "inAPP", "0");
-        Log.i("info", "!!!!out");
-    }
-
-    @Override
-    protected void onResume() {
-        //app返回前台调用的方法
-        super.onResume();
-        SharedPreferencesUtils.setParam(this, "inAPP", "1");
-        Log.i("info", "!!!!in");
-    }
-
     private void setTimeAndRing() {
-        setTime.setOnClickListener(new View.OnClickListener() {
+        setTime.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 setTime();
             }
         });
-        setRing.setOnClickListener(new View.OnClickListener() {
+        setRing.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 setRingtone();
             }
         });
-        setOver.setOnClickListener(new View.OnClickListener() {
+        setOver.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 setAlarm(calendar);
@@ -88,7 +72,7 @@ public class AlarmActivity extends AppCompatActivity {
     private void setAlarm(Calendar calendar) {
         Intent intent = new Intent();
         intent.setClass(this, AlarmBroadcastReceiver.class);
-        intent.putExtra("msg", "Time For Read!");
+        intent.putExtra("msg", "Get up!Get up!");
         intent.putExtra("ringURI", ringUri.toString());
         Log.d(TAG, ringUri.toString());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
@@ -97,19 +81,19 @@ public class AlarmActivity extends AppCompatActivity {
 
     //设置时间
     private void setTime() {
-//        Date date = new Date();
-//        calendar.setTime(date);
+        Date date = new Date();
+        calendar.setTime(date);
         int hour = calendar.get(Calendar.HOUR);
         int minute = calendar.get(Calendar.MINUTE);
-        new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+        new TimePickerDialog(this, new OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                 calendar.set(Calendar.HOUR, hour);
                 calendar.set(Calendar.MINUTE, minute);
-                Toast.makeText(AlarmActivity.this, hour + " " + minute, Toast.LENGTH_SHORT).show();
+                Log.i("info", "!!!!!!" + calendar.get(Calendar.HOUR) + " " + calendar.get(Calendar.SECOND));
+                Log.i("info", "!!!!!!!!!!!!" + hour + " " + minute);
             }
         }, hour, minute, true).show();
-
     }
 
     //设置闹玲铃声
@@ -165,7 +149,7 @@ public class AlarmActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.alarm, menu);
+        //  getMenuInflater().inflate(R.menu.alarm, menu);
         return true;
     }
 }
