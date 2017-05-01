@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
 
-import com.example.cjb.myapplication.activity.LoginActivity;
+import com.example.cjb.myapplication.activity.MainActivity;
 import com.example.cjb.myapplication.util.SharedPreferencesUtils;
 import com.example.cjb.myapplication.view.DesktopLayout;
 
@@ -60,7 +60,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
                 String isInAPP = SharedPreferencesUtils.getParam(context, "isInAPP", "0").toString();
                 //程序在后台才执行跳转到主页面
                 if (isInAPP.equals("0")) {
-                    Intent intentToMain = new Intent(context, LoginActivity.class);
+                    Intent intentToMain = new Intent(context, MainActivity.class);
                     intentToMain.addCategory(Intent.CATEGORY_LAUNCHER);
                     intentToMain.setAction(Intent.ACTION_MAIN);
                     intentToMain.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK);

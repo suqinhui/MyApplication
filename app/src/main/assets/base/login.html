@@ -214,16 +214,12 @@
       var loginButton = document.getElementById('login');
       var register = document.getElementById("register");
       loginButton.addEventListener("click", function () {
-        var loginResult = JsInteractionEvent.loginCheck(userName.value, passWord.value);
-        if (loginResult == true) {
-          window.location.href = "main.html";
-        }
+        JsInteractionLoginEvent.loginCheck(userName.value, passWord.value);
       });
       register.addEventListener("click", function () {
         window.location.href = "reg.html";
       })
-
-</script>
+    </script>
 </body>
 
 </html>

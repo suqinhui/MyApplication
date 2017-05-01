@@ -185,7 +185,7 @@
                 <div>
                     <ul>
                         <li class="mui-table-view-cell " style="margin-right: 20px; list-style-type:none;">
-                            <a href="login.html"
+                            <a id="to_login"
                                style="text-align: center; margin-right: 10px;background-color: #46A3FF; "><span>退出登录</span></a>
                         </li>
                     </ul>
@@ -303,6 +303,11 @@
         if (userInfoObj.timing != "0") {
           timing.html(userInfoObj.timing);
         }
+        //退出登录
+        var toLogin = $("#to_login");
+        toLogin.click(function () {
+          JsInteractionEvent.toLogin();
+        });
       });
       //设置我页面
       (function ($) {

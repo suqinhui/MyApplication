@@ -170,7 +170,7 @@
       var register = document.getElementById("register");
       var toLogin = document.getElementById("to_login");
       register.addEventListener("click", function () {
-        var registerResult = JsInteractionEvent.doRegister(userName.value, nickName.value, passWord.value, passWord1.value);
+        var registerResult = JsInteractionLoginEvent.doRegister(userName.value, nickName.value, passWord.value, passWord1.value);
         if (registerResult == true) {
           alert("注册成功！");
           window.open("login.html");

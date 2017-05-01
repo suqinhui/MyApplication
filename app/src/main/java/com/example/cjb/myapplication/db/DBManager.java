@@ -3,11 +3,7 @@ package com.example.cjb.myapplication.db;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
-
-import com.example.cjb.myapplication.activity.LoginActivity;
-import com.example.cjb.myapplication.util.SharedPreferencesUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
