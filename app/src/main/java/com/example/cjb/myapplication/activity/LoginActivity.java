@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +22,6 @@ import com.example.cjb.myapplication.receiver.AlarmBroadcastReceiver;
 import com.example.cjb.myapplication.util.SharedPreferencesUtils;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
@@ -33,7 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     private DBManager dbManager;
     private Calendar calendar = Calendar.getInstance(Locale.CHINESE);
     private AlarmManager alarmManager;
-    private Uri ringUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
     private Handler handler = new Handler();
 
     @Override
@@ -49,16 +45,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStop() {
         //app返回后台调用的方法
         super.onStop();
-        SharedPreferencesUtils.setParam(this, "inAPP", "0");
-        Log.i("info", "!!!!out");
+        SharedPreferencesUtils.setParam(this, "isInAPP", "0");
     }
 
     @Override
     protected void onResume() {
         //app返回前台调用的方法
         super.onResume();
-        SharedPreferencesUtils.setParam(this, "inAPP", "1");
-        Log.i("info", "!!!!in");
+        SharedPreferencesUtils.setParam(this, "isInAPP", "1");
     }
 
     private void initView() {
@@ -66,8 +60,6 @@ public class LoginActivity extends AppCompatActivity {
         webSettings = webView.getSettings();
         dbManager = new DBManager(this);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
-        Log.i("info","!!!!!!!!!!"+dbManager.dbGetUserCollectBook(username));
     }
 
     //初始化定时任务，判断是否需要清空今日积分
@@ -95,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initEvent() {
         webSettings.setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
-        webView.loadUrl("file:///android_asset/base/main.html");
+        webView.loadUrl("file:///android_asset/base/login.html");
         ////设置本地调用对象及其接口
         webView.addJavascriptInterface(new JsInteraction(), "JsInteractionEvent");
         //设置不用系统浏览器打开,直接显示在当前Webview
@@ -128,7 +120,6 @@ public class LoginActivity extends AppCompatActivity {
         //注册
         public boolean doRegister(String username, String nickname, String password, String password1) {
             boolean registerResult = false;
-            Log.i("info", "!!!!" + username + " " + nickname + " " + password + " " + password1);
             if (username.equals("")) {
                 Toast.makeText(LoginActivity.this, "用户名不能为空！", Toast.LENGTH_SHORT).show();
             } else if (nickname.equals("")) {
@@ -169,15 +160,13 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "设置成功！", Toast.LENGTH_SHORT).show();
 
             //做闹钟功能
-            Log.i("info", "!!!!time" + time.substring(0, 2) + " " + time.substring(3, 5));
             int hour = Integer.parseInt(time.substring(0, 2));
             int minute = Integer.parseInt(time.substring(3, 5));
-            calendar.set(Calendar.HOUR, hour);
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
+            calendar.set(Calendar.SECOND, 0);
             Intent intent = new Intent();
             intent.setClass(LoginActivity.this, AlarmBroadcastReceiver.class);
-            intent.putExtra("msg", "Time For Read!");
-            intent.putExtra("ringURI", ringUri.toString());
             PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, 0, intent, 0);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
@@ -186,7 +175,6 @@ public class LoginActivity extends AppCompatActivity {
         //修改个人信息
         public boolean updateUserInfo(String nickname, String sex, String age, String email) {
             boolean result = false;
-            Log.i("info", "!!!!" + nickname + " " + sex + " " + age + " " + email);
             String username = SharedPreferencesUtils.getParam(LoginActivity.this, "username", "").toString();
             if (nickname.equals("")) {
                 Toast.makeText(LoginActivity.this, "昵称不能为空!", Toast.LENGTH_SHORT).show();
