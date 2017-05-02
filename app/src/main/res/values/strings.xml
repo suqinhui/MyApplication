@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">爱读</string>
+    <string name="accessibility_description">开启服务是使用爱读的"监测App打开"的功能,开启后才能使用爱读的核心功能\n\n提示：打开服务时，会收到系统例行的警示提醒，爱读不会进行侵害用户利益的行为，请放心使用</string>
+
 </resources>

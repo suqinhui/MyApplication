@@ -3,10 +3,17 @@ package com.example.cjb.myapplication.activity;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -18,7 +25,11 @@ import android.widget.Toast;
 import com.example.cjb.myapplication.R;
 import com.example.cjb.myapplication.db.DBManager;
 import com.example.cjb.myapplication.receiver.AlarmBroadcastReceiver;
+import com.example.cjb.myapplication.service.MonitorAppsService;
 import com.example.cjb.myapplication.util.SharedPreferencesUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -35,9 +46,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initView();
-        initEvent();
+        initView();  //初始化布局
+        initEvent();  //初始化事件
         initTimeTask();//初始化定时任务，判断是否需要清空今日积分
+        stratMonitorService();//开启监听服务
+        registerReceiverForMonitor();//注册监听桌面事件的接收器
     }
 
     @Override
@@ -61,6 +74,18 @@ public class MainActivity extends AppCompatActivity {
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
 
+    @SuppressLint("JavascriptInterface")
+    private void initEvent() {
+        webSettings.setJavaScriptEnabled(true);
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.loadUrl("file:///android_asset/base/main.html");
+        ////设置本地调用对象及其接口
+        webView.addJavascriptInterface(new JsInteraction(), "JsInteractionEvent");
+        //设置不用系统浏览器打开,直接显示在当前Webview
+        webView.setWebViewClient(new WebViewClient() {
+        });
+    }
+
     //初始化定时任务，判断是否需要清空今日积分
     private void initTimeTask() {
         Runnable runnable = new Runnable() {
@@ -78,20 +103,73 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferencesUtils.setParam(MainActivity.this, "oldTime", String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)));
             }
         };
-        handler.postDelayed(runnable, 1000);//每两秒执行一次runnable
+        handler.postDelayed(runnable, 1000);//每秒执行一次runnable
     }
 
+    /**
+     * 启动后台监测正在运行的程序服务
+     */
+    public void stratMonitorService() {
+        if (MonitorAppsService.isAccessibilitySettingsOn(this)) {
+            MonitorAppsService.getInstance();
+        } else {
+            showNoPermission();
+        }
+    }
 
-    @SuppressLint("JavascriptInterface")
-    private void initEvent() {
-        webSettings.setJavaScriptEnabled(true);
-        webView.setWebChromeClient(new WebChromeClient());
-        webView.loadUrl("file:///android_asset/base/main.html");
-        ////设置本地调用对象及其接口
-        webView.addJavascriptInterface(new JsInteraction(), "JsInteractionEvent");
-        //设置不用系统浏览器打开,直接显示在当前Webview
-        webView.setWebViewClient(new WebViewClient() {
-        });
+    /**
+     * 提示并引导用户开启辅助权限
+     */
+    private void showNoPermission() {
+        AlertDialog.Builder noPermissionDialog = null;
+        if (noPermissionDialog == null) {
+            noPermissionDialog = new AlertDialog.Builder(this)
+                    .setTitle("权限不足")
+                    .setMessage("需要为该App开启辅助功能才能正常运行")
+                    .setPositiveButton("去打开", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this, "辅助功能未开启，暂时无法监听！", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+        noPermissionDialog.show();
+    }
+
+    //注册广播接收器，用来接收桌面监听到的启动的app包名去判断是否要关闭
+    private void registerReceiverForMonitor() {
+        IntentFilter intentFilter = new IntentFilter("stop_other_app");  //过滤器
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //获取用户的今日积分
+                String username = SharedPreferencesUtils.getParam(MainActivity.this, "username", "").toString();
+                String userInfo = dbManager.dbGetUserInfo(username);
+                try {
+                    JSONObject userInfoObj = new JSONObject(userInfo);
+                    String todayIntegration = userInfoObj.getString("today_integration");
+                    //今日积分小于100禁止其他app
+                    if (Integer.parseInt(todayIntegration) < 100) {
+                        //响应home键的动作
+                        Intent intentToHome = new Intent(Intent.ACTION_MAIN);
+                        intentToHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //如果是服务里调用，必须加入new task标识
+                        intentToHome.addCategory(Intent.CATEGORY_HOME);
+                        getApplicationContext().startActivity(intentToHome);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        registerReceiver(receiver, intentFilter);
     }
 
     //定义用来跟js交互的类
