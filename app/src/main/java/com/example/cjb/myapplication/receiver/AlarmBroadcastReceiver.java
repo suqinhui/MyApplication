@@ -14,7 +14,7 @@ import android.view.WindowManager;
 
 import com.example.cjb.myapplication.activity.MainActivity;
 import com.example.cjb.myapplication.util.SharedPreferencesUtils;
-import com.example.cjb.myapplication.view.DesktopLayout;
+import com.example.cjb.myapplication.view.AlarmLayout;
 
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "AlarmBroadcastReceiver";
     private WindowManager mWindowManager;
     private WindowManager.LayoutParams mLayout;
-    private DesktopLayout mDesktopLayout;
+    private AlarmLayout mAlarmLayout;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -79,7 +79,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         // 取得系统窗体
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         //创建桌面布局
-        mDesktopLayout = new DesktopLayout(context);
+        mAlarmLayout = new AlarmLayout(context);
         // 窗体的布局样式
         mLayout = new WindowManager.LayoutParams();
         // 设置窗体显示类型——TYPE_SYSTEM_ALERT(系统提示)
@@ -104,7 +104,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
             mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         }
         try {
-            mWindowManager.addView(mDesktopLayout, mLayout);
+            mWindowManager.addView(mAlarmLayout, mLayout);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "开启悬浮窗失败");
@@ -119,7 +119,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
             mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         }
         try {
-            mWindowManager.removeView(mDesktopLayout);
+            mWindowManager.removeView(mAlarmLayout);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "关闭悬浮窗失败");

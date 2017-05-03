@@ -1,15 +1,24 @@
 package com.example.cjb.myapplication.service;
 
 import android.accessibilityservice.AccessibilityService;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.PixelFormat;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
+
+import com.example.cjb.myapplication.activity.MainActivity;
+import com.example.cjb.myapplication.view.AlarmLayout;
+import com.example.cjb.myapplication.view.HintLayout;
 
 /**
  * 利用Android辅助工具类AccessibilityService可以获取手机当前页面的信息,用户的操作事件等等.
@@ -55,7 +64,7 @@ public class MonitorAppsService extends AccessibilityService {
                 PackageInfo packageInfo = getPackageManager().getPackageInfo(event.getPackageName().toString(), 0);
                 if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
                     Log.d(TAG, "你打开了:" + "系统应用");
-                }else {
+                } else {
                     Log.d(TAG, "你打开了：" + "非系统应用");
                     if (event.getPackageName().toString().equals("com.example.cjb.myapplication")) {
                         Log.d(TAG, "你打开了爱读app");
@@ -64,6 +73,7 @@ public class MonitorAppsService extends AccessibilityService {
                         Intent intent = new Intent();
                         intent.setAction("stop_other_app");
                         sendBroadcast(intent);
+
                     }
                 }
             } catch (PackageManager.NameNotFoundException e) {
@@ -86,7 +96,6 @@ public class MonitorAppsService extends AccessibilityService {
     public void onCreate() {
         super.onCreate();
     }
-
 
     /**
      * 此方法用来判断当前应用的辅助功能服务是否开启

@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.example.cjb.myapplication.R;
 
-public class DesktopLayout extends LinearLayout {
-    public DesktopLayout(final Context context) {
+public class AlarmLayout extends LinearLayout {
+    public AlarmLayout(final Context context) {
         super(context);
         setOrientation(LinearLayout.VERTICAL);// 水平排列
         //设置宽高

@@ -8,13 +8,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -27,6 +30,7 @@ import com.example.cjb.myapplication.db.DBManager;
 import com.example.cjb.myapplication.receiver.AlarmBroadcastReceiver;
 import com.example.cjb.myapplication.service.MonitorAppsService;
 import com.example.cjb.myapplication.util.SharedPreferencesUtils;
+import com.example.cjb.myapplication.view.HintLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
     private Calendar calendar = Calendar.getInstance(Locale.CHINESE);
     private AlarmManager alarmManager;
     private Handler handler = new Handler();
+
+    //桌面悬浮窗相关
+    private final static String TAG = "MainActivity";
+    private static WindowManager mWindowManager;
+    private WindowManager.LayoutParams mLayout;
+    private static HintLayout mLintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +173,11 @@ public class MainActivity extends AppCompatActivity {
                         intentToHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //如果是服务里调用，必须加入new task标识
                         intentToHome.addCategory(Intent.CATEGORY_HOME);
                         getApplicationContext().startActivity(intentToHome);
+
+                        //设置桌面悬浮窗提示
+                        createWindowManager(getApplicationContext());
+                        showDesk(getApplicationContext());
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -171,6 +186,61 @@ public class MainActivity extends AppCompatActivity {
         };
         registerReceiver(receiver, intentFilter);
     }
+
+    /**
+     * 设置WindowManager
+     */
+    private void createWindowManager(Context context) {
+        // 取得系统窗体
+        mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        //创建桌面布局
+        mLintLayout = new HintLayout(context);
+        // 窗体的布局样式
+        mLayout = new WindowManager.LayoutParams();
+        // 设置窗体显示类型——TYPE_SYSTEM_ALERT(系统提示)
+        mLayout.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        // 设置窗体焦点及触摸：
+        // FLAG_NOT_FOCUSABLE(不能获得按键输入焦点)
+        mLayout.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        // 设置显示的模式
+        mLayout.format = PixelFormat.RGBA_8888;
+        // 设置对齐的方法
+        mLayout.gravity = Gravity.CENTER | Gravity.CENTER;
+        // 设置窗体宽度和高度
+        mLayout.width = WindowManager.LayoutParams.MATCH_PARENT;
+        mLayout.height = WindowManager.LayoutParams.MATCH_PARENT;
+    }
+
+    /**
+     * 显示DesktopLayout
+     */
+    private void showDesk(Context context) {
+        if (mWindowManager == null) {
+            mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        }
+        try {
+            mWindowManager.addView(mLintLayout, mLayout);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, "开启悬浮窗失败");
+        }
+    }
+
+    /**
+     * 关闭DesktopLayout
+     */
+    public static void closeDesk(Context context) {
+        if (mWindowManager == null) {
+            mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        }
+        try {
+            mWindowManager.removeView(mLintLayout);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, "关闭悬浮窗失败");
+        }
+    }
+
 
     //定义用来跟js交互的类
     private class JsInteraction {
