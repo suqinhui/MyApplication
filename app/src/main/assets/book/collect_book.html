@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>首页</title>
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+  <link href="../css/mui.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/mui.css"/>
+  <link href="../css/hwl.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+  <!--标准mui.css-->
+  <!--App自定义的css-->
+  <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+  <link href="../css/mui.picker.css" rel="stylesheet"/>
+  <link href="../css/mui.poppicker.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css"/>
+  <!--<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />-->
+  <style>
+    .slide-img {
+    height: 150px;
+    }
+  </style>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="../SUI Mobile/lib/css/sm.min.css">
+  <link rel="stylesheet" href="../SUI Mobile/lib/css/sm-extend.min.css">
+
+</head>
+<body>
+
+<div class="page-group" id="page_group">
+  <div class="page page-current" id="page_book_list">
+    <!-- 标题栏 -->
+    <header class="mui-bar mui-bar-nav">
+      <a class="mui-icon mui-icon-left-nav mui-pull-left" onClick="javascript :history.back(-1);"></a>
+      <h4 class="title" style="font-size: 20px">收藏书单</h4>
+    </header>
+    <!-- 工具栏 -->
+
+    <!-- 这里是页面内容区 -->
+    <div class="content" style="margin-top: 40px">
+      <div style="text-align: center" id="image_empty">
+        <img src="../images/empty.png" style="margin-top: 100px">
+        <h4 style="margin-top: 20px">暂无收藏书籍</h4>
+      </div>
+      <ul id="collect_book" class="mui-table-view mui-grid-view mui-grid-9">
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="../js/mui.min.js"></script>
+<script src="../js/mui.picker.js"></script>
+<script src="../js/mui.picker.min.js"></script>
+<script src="../js/mui.poppicker.js"></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/sm-extend.min.js' charset='utf-8'></script>
+<script>
+      $(document).ready(function (e) {
+        //设置收藏书单页面
+        var imageEmpty = $("#image_empty");
+        var collectBookTable = $("#collect_book");
+        var collectBookList = document.body.querySelector('#collect_book');
+        var collectBookInfo = JsInteractionEvent.getUserCollectBook();
+        var collectBookInfoArray = JSON.parse(collectBookInfo);
+        if (collectBookInfoArray.length == 0) {
+          imageEmpty.show();
+          collectBookTable.hide();
+        } else {
+          imageEmpty.hide();
+          collectBookTable.show();
+          for (var j = 0; j < collectBookInfoArray.length; j++) {
+            var li = document.createElement('li');
+            li.className = 'mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3';
+            var imageSrc1 = "../images/books/" + collectBookInfoArray[j].book_english_name + ".jpg";
+            var hrefSrc1 = "../book/book_info.html?book_english_name=" + collectBookInfoArray[j].book_english_name;
+            var bookName = collectBookInfoArray[j].book_name;
+            li.innerHTML = '<a href=' + hrefSrc1 + '>' + '<img src=' + imageSrc1 + ' style="height: 90px;width: 80px;"/>' + '<div class="mui-media-body">' + bookName + '</div> ' + '</a>';
+            collectBookList.appendChild(li);
+          }
+        }
+      });
+    </script>
+<script>
+      $.init();
+    </script>
+</body>
+</html>

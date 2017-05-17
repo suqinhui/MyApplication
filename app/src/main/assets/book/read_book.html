@@ -3,9 +3,8 @@
 
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=3.0,user-scalable=yes"/>
     <meta name="HandheldFriendly" content="true"/>
-    <meta name="MobileOptimized" content="320"/>
     <title>Hello H5+</title>
     <script type="text/javascript" charset="utf-8">
       // 在流应用环境下显示“创建桌面图标”
@@ -39,6 +38,7 @@
 </head>
 
 <body>
+
 <header class="mui-bar mui-bar-nav">
     <a class="mui-icon mui-icon-left-nav mui-pull-left" onClick="javascript :history.back(-1);"></a>
     <h1 class="mui-title" style="font-size: 20px;;">阅读</h1>
@@ -54,12 +54,16 @@
 
         <br/>
     </div>
-    <p class="des" style="font-size:16px;line-height:30px;margin: 0px .5em;" id="chapter_content">
+    <p class="des" style="font-size:16px;line-height:30px;" id="chapter_content">
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </p>
     <br/>
-
-
+    <br/>
+    <br/>
+    <br/>
+    <nav class="mui-bar mui-bar-tab">
+        <button style="margin-top: 8px; width: 100%; border: 0px; font-size: 20px" id="add_note">添加笔记</button>
+    </nav>
 </div>
 <script src="../SUI Mobile/plugin/tests/vendor/jquery.min.js"></script>
 <script type="text/javascript">
@@ -86,9 +90,13 @@
         question.click(function () {
           window.location.href = "question.html?book_english_name=" + bookEnglishName + "&chapter_id=" + bookChapterId;
         });
+
+        var addNote = $("#add_note");
+        addNote.click(function () {
+          window.location.href = "add_note.html?book_english_name=" + bookEnglishName;
+        });
 //        alert(bookEnglishName + " " + bookChapterId + " " + bookChineseName);
       });
     </script>
 </body>
-
 </html>

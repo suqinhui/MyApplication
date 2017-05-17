@@ -26,20 +26,38 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL("create table account(username varchar(20) PRIMARY KEY not null,password varchar(20) not null,nickname varchar(20) not null,sex varchar(20) not null,age varchar(20) not null,email varchar(20) not null,all_integration varchar(20) not null,today_integration varchar(20) not null,timing varchar(20) not null,face_image varchar(255) not null)");
         //用户收藏书籍表
         db.execSQL("create table user_collect(username varchar(20) not null,book_name varchar(20)not null,book_english_name varchar(20) not null)");
+        //用户笔记表
+        db.execSQL("create table user_note(username varchar(20) not null,book_english_name varchar(20) not null,note_title varchar(20) not null,note_content varchar(20) not null)");
+        //用户错题集
+        
+
 
         //插入一个管理员用户
         db.execSQL("insert into account(username,password,nickname,sex,age,email,all_integration,today_integration,timing,face_image)values('admin','admin','管理员','请选择','','','0','0','0','')");
 
         //插入书籍表
         db.execSQL("insert into book_table(book_name,book_english_name,author,introduction,years,image)values('疯狂java实战演义','crazy_java','杨恩雄 麦凯翔','《 疯狂Java实战演义》以15个生动的Java案例，引领读者体验Java开发的乐趣。书中使用Java的Swing技术开发了若干个游戏，从这些游戏中可以了解到，Java一样可以做出优秀的游戏和应用程序。本书知识点丰富，适合有一定Java基础、有意向做Java桌面应用程序或者想了解Java图形界面编程的读者阅读，也可作为Java开发程序员的案例参考书。','2010-6-02','dfafadfadfafd')");
-        db.execSQL("insert into book_table(book_name,book_english_name,author,introduction,years,image)values('android开发','android_dev','苏钦辉','这里是简介这里是简介','1994','fadfafa')");
+        db.execSQL("insert into book_table(book_name,book_english_name,author,introduction,years,image)values('android网络开发','book1','苏钦辉','这里是简介这里是简介','1883','fadfafa')");
+        db.execSQL("insert into book_table(book_name,book_english_name,author,introduction,years,image)values('android开发入门与实践体验','book2','宋一博','这里是简介这里是简介','1997','fadfafa')");
+        db.execSQL("insert into book_table(book_name,book_english_name,author,introduction,years,image)values('android开发入门与实战','book3','钱仁法','这里是简介这里是简介','1994','fadfafa')");
 
         //插入书籍章节
         //android开发
-        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('android_dev','第1章','1','这里是android开发第一章内容')");
-        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('android_dev','第2章','2','这里是android开发第二章内容')");
-        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('android_dev','第3章','3','这里是android开发第三章内容')");
-        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('android_dev','第4章','4','这里是android开发第四章内容')");
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book1','第1章','1','这里是android开发第一章内容')");
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book1','第2章','2','这里是android开发第二章内容')");
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book1','第3章','3','这里是android开发第三章内容')");
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book1','第4章','4','这里是android开发第四章内容')");
+
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book2','第1章','1','这里是android开发第一章内容')");
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book2','第2章','2','这里是android开发第二章内容')");
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book2','第3章','3','这里是android开发第三章内容')");
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book2','第4章','4','这里是android开发第四章内容')");
+
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book3','第1章','1','这里是android开发第一章内容')");
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book3','第2章','2','这里是android开发第二章内容')");
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book3','第3章','3','这里是android开发第三章内容')");
+        db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('book3','第4章','4','这里是android开发第四章内容')");
+
         // 疯狂java
         db.execSQL("insert into book_chapter(book_english_name,chapter_name,chapter_id,content)values('crazy_java','第1章 控制台五子棋','1','1.1 引言\n" +
                 "控制台五子棋，顾名思义，就是在Java控制台运行的五子棋游戏，需要用户用键盘输入棋子的位置来进行游戏。\n" +
@@ -2334,6 +2352,45 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','5','关于面向对象的说法正确的是：','A、类可以让我们用程序模拟现实世界中的实体 ','B、有多少个实体就要创建多少个类','C、对象的行为和属性被封装在类中，外界通过调用类的方法来获得，但是要知道类的内部是如何实现','D、现实世界中的某些实体不能用类来描述','A')");
         db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','5','将类的成员的访问权限设置为默认的，则该成员能被：','A、同一包中的类访问','B、其他包中的类访问','C、所有的类访问','D、所有的类的子类访问','A')");
         db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('crazy_java','5','下面关于继承的说法，正确的是：','A、超类的对象就是子类的对象','B、一个类可以有几个超类','C、一个类只能有一个子类','D、一个类只能有一个超类','D')");
+
+
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book1','1','JAVA所定义的版本中不包括：','A、JAVA2 EE','B、JAVA2 Card','C、JAVA2 ME','D、JAVA2 HE','D')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book1','1','下列说法正确的是：','A、JAVA程序的main方法必须写在类里面','B、JAVA程序中可以有多个main方法','C、JAVA程序中类名必须与文件名一样','D、JAVA程序的main方法中如果只有一条语句，可以不用{}(大括号)括起来','A')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book1','1','变量命名规范说法正确的是：','A、变量由字母、下划线、数字、$符号随意组成；','B、变量不能以数字作为开头；','C、A和a在java中是同一个变量；','D、不同类型的变量，可以起相同的名字；','B')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book1','1','为一个boolean类型变量赋值时，可以使用:','A、boolean = 1;','B、boolean a = (9 >= 10);','C、boolean a=\"真\";','D、boolean a = = false;','B')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book1','1','以下不是合法的标识符的是：','A、STRING','B、x3x;','C、void','D、de$f','C')");
+
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book1','2','表达式(11+3*8)/4%3的值是：','A、31','B、0','C、1','D、2','D')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book1','2','以下表达式不可以作为循环条件的是：','A、i++;','B、i>5;','C、bEqual = str.equals(\"q\");','D、count = = i;','A')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book1','2','运算符优先级别排序正确的是：','A、由高向低分别是：()、!、算术运算符、关系运算符、逻辑运算符、赋值运算符；','B、由高向低分别是：()、关系运算符、算术运算符、赋值运算符、!、逻辑运算符；','C、由高向低分别是：()、算术运算符、逻辑运算符、关系运算符、!、赋值运算符；','D、由高向低分别是：()、!、关系运算符、赋值运算符、算术运算符、逻辑运算符；','A')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book1','2','下列值不为true的表达式有：','A、\"john\" = = \"john\"','B、\"john\".equals(\"john\")','C、\"john\" = \"john\"','D、\"john\".equals(new String(\"john\"))','C')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book1','2','下面有关for循环的描述正确的是：','A、for循环体语句中，可以包含多条语句，但要用大括号括起来','B、for循环只能用于循环次数已经确定的情况','C、在for循环中，不能使用break语句跳出循环','D、for循环是先执行循环体语句，后进行条件判断','A')");
+
+
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book2','1','JAVA所定义的版本中不包括：','A、JAVA2 EE','B、JAVA2 Card','C、JAVA2 ME','D、JAVA2 HE','D')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book2','1','下列说法正确的是：','A、JAVA程序的main方法必须写在类里面','B、JAVA程序中可以有多个main方法','C、JAVA程序中类名必须与文件名一样','D、JAVA程序的main方法中如果只有一条语句，可以不用{}(大括号)括起来','A')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book2','1','变量命名规范说法正确的是：','A、变量由字母、下划线、数字、$符号随意组成；','B、变量不能以数字作为开头；','C、A和a在java中是同一个变量；','D、不同类型的变量，可以起相同的名字；','B')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book2','1','为一个boolean类型变量赋值时，可以使用:','A、boolean = 1;','B、boolean a = (9 >= 10);','C、boolean a=\"真\";','D、boolean a = = false;','B')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book2','1','以下不是合法的标识符的是：','A、STRING','B、x3x;','C、void','D、de$f','C')");
+
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book2','2','表达式(11+3*8)/4%3的值是：','A、31','B、0','C、1','D、2','D')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book2','2','以下表达式不可以作为循环条件的是：','A、i++;','B、i>5;','C、bEqual = str.equals(\"q\");','D、count = = i;','A')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book2','2','运算符优先级别排序正确的是：','A、由高向低分别是：()、!、算术运算符、关系运算符、逻辑运算符、赋值运算符；','B、由高向低分别是：()、关系运算符、算术运算符、赋值运算符、!、逻辑运算符；','C、由高向低分别是：()、算术运算符、逻辑运算符、关系运算符、!、赋值运算符；','D、由高向低分别是：()、!、关系运算符、赋值运算符、算术运算符、逻辑运算符；','A')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book2','2','下列值不为true的表达式有：','A、\"john\" = = \"john\"','B、\"john\".equals(\"john\")','C、\"john\" = \"john\"','D、\"john\".equals(new String(\"john\"))','C')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book2','2','下面有关for循环的描述正确的是：','A、for循环体语句中，可以包含多条语句，但要用大括号括起来','B、for循环只能用于循环次数已经确定的情况','C、在for循环中，不能使用break语句跳出循环','D、for循环是先执行循环体语句，后进行条件判断','A')");
+
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book3','1','JAVA所定义的版本中不包括：','A、JAVA2 EE','B、JAVA2 Card','C、JAVA2 ME','D、JAVA2 HE','D')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book3','1','下列说法正确的是：','A、JAVA程序的main方法必须写在类里面','B、JAVA程序中可以有多个main方法','C、JAVA程序中类名必须与文件名一样','D、JAVA程序的main方法中如果只有一条语句，可以不用{}(大括号)括起来','A')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book3','1','变量命名规范说法正确的是：','A、变量由字母、下划线、数字、$符号随意组成；','B、变量不能以数字作为开头；','C、A和a在java中是同一个变量；','D、不同类型的变量，可以起相同的名字；','B')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book3','1','为一个boolean类型变量赋值时，可以使用:','A、boolean = 1;','B、boolean a = (9 >= 10);','C、boolean a=\"真\";','D、boolean a = = false;','B')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book3','1','以下不是合法的标识符的是：','A、STRING','B、x3x;','C、void','D、de$f','C')");
+
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book3','2','表达式(11+3*8)/4%3的值是：','A、31','B、0','C、1','D、2','D')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book3','2','以下表达式不可以作为循环条件的是：','A、i++;','B、i>5;','C、bEqual = str.equals(\"q\");','D、count = = i;','A')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book3','2','运算符优先级别排序正确的是：','A、由高向低分别是：()、!、算术运算符、关系运算符、逻辑运算符、赋值运算符；','B、由高向低分别是：()、关系运算符、算术运算符、赋值运算符、!、逻辑运算符；','C、由高向低分别是：()、算术运算符、逻辑运算符、关系运算符、!、赋值运算符；','D、由高向低分别是：()、!、关系运算符、赋值运算符、算术运算符、逻辑运算符；','A')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book3','2','下列值不为true的表达式有：','A、\"john\" = = \"john\"','B、\"john\".equals(\"john\")','C、\"john\" = \"john\"','D、\"john\".equals(new String(\"john\"))','C')");
+        db.execSQL("insert into question(book_english_name,chapter_id,question_content,answer_a,answer_b,answer_c,answer_d,right_answer)values('book3','2','下面有关for循环的描述正确的是：','A、for循环体语句中，可以包含多条语句，但要用大括号括起来','B、for循环只能用于循环次数已经确定的情况','C、在for循环中，不能使用break语句跳出循环','D、for循环是先执行循环体语句，后进行条件判断','A')");
+
 
     }
 

@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("JavascriptInterface")
     private void initEvent() {
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);      //设置缩放后不会变形
+        webSettings.setBuiltInZoomControls(true);     //设置可以缩放
         webView.setWebChromeClient(new WebChromeClient());
         webView.loadUrl("file:///android_asset/base/main.html");
         ////设置本地调用对象及其接口
@@ -390,6 +392,35 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+        @JavascriptInterface
+        //插入笔记
+        public boolean insertIntoUserNote(String bookEnglishName, String title, String content) {
+            String username = SharedPreferencesUtils.getParam(MainActivity.this, "username", "").toString();
+            return dbManager.dbInsertIntoUserNote(username, bookEnglishName, title, content);
+        }
+
+        @JavascriptInterface
+        //更新笔记
+        public void updateUserNote(String bookEnglishName, String title, String content) {
+            String username = SharedPreferencesUtils.getParam(MainActivity.this, "username", "").toString();
+            dbManager.dbUpdateUserNote(username,bookEnglishName,title,content);
+        }
+
+        @JavascriptInterface
+        //获取用户的笔记书籍信息
+        public String getUserNoteList() {
+            String username = SharedPreferencesUtils.getParam(MainActivity.this, "username", "").toString();
+            return dbManager.dbGetUserNoteList(username);
+        }
+
+        @JavascriptInterface
+        //获取用户的指定书籍的所有笔记列表
+        public String getUserAllNoteList(String bookEnglishName) {
+            String username = SharedPreferencesUtils.getParam(MainActivity.this, "username", "").toString();
+            return dbManager.dbGetUserAllNoteList(username, bookEnglishName);
+        }
+
 
     }
 

@@ -78,7 +78,7 @@
             </a>
             <a class="tab-item external" href="#" name="btn_book_list">
                 <span class="icon icon-star"></span>
-                <span class="tab-label">书单</span>
+                <span class="tab-label">笔记</span>
             </a>
             <a class="tab-item external" href="#" name="btn_me">
                 <span class="icon icon-me"></span>
@@ -95,7 +95,7 @@
     <div class="page" id="page_book_list">
         <!-- 标题栏 -->
         <header class="bar bar-nav">
-            <h4 class="title" style="font-size: 20px">收藏书单</h4>
+            <h4 class="title" style="font-size: 20px">笔记</h4>
         </header>
         <!-- 工具栏 -->
         <nav class="bar bar-tab">
@@ -105,7 +105,7 @@
             </a>
             <a class="tab-item external active" href="#" name="btn_book_list">
                 <span class="icon icon-star"></span>
-                <span class="tab-label">书单</span>
+                <span class="tab-label">笔记</span>
             </a>
             <a class="tab-item external" href="#" name="btn_me">
                 <span class="icon icon-me"></span>
@@ -115,14 +115,22 @@
 
         <!-- 这里是页面内容区 -->
         <div class="content">
-            <div style="text-align: center" id="image_empty">
-                <img src="../images/empty.png" style="margin-top: 100px">
-                <h4 style="margin-top: 20px">暂无收藏书籍</h4>
+            <div class="mui-control-content mui-active ">
+                <ul class="mui-table-view ">
+                    <li class="mui-table-view-cell " id="note_page">
+                        <a class="mui-icon iconfont icon-form" style="margin-top: 3px;" href="../book/note_page.html"></span>
+                            笔记</span></a>
+                    </li>
+                    <li class="mui-table-view-cell " id="error_page">
+                        <a class="mui-icon iconfont icon-form" style="margin-top: 3px;" href="../book/error_page.html"></span>
+                            错题集</span></a>
+                    </li>
+                </ul>
             </div>
-            <ul id="collect_book" class="mui-table-view mui-grid-view mui-grid-9">
-            </ul>
         </div>
     </div>
+
+
     <div class="page" id="page_me">
         <!-- 工具栏 -->
         <nav class="bar bar-tab">
@@ -132,7 +140,7 @@
             </a>
             <a class="tab-item external" href="#" name="btn_book_list">
                 <span class="icon icon-star"></span>
-                <span class="tab-label">书单</span>
+                <span class="tab-label">笔记</span>
             </a>
             <a class="tab-item external active" href="#" name="btn_me">
                 <span class="icon icon-me"></span>
@@ -142,8 +150,8 @@
         <!-- 这里是页面内容区 -->
         <div class="content">
             <div class="mui-content">
-                <div class="" align="center" style="background-color: #46A3FF"><img src="../images/jobhunter/msg_who3.png"
-                                                                                    style="background-color: white;border-radius:50%; margin-top: 10px"/>
+                <div class="" align="center" style="background-color: #46A3FF"><img src="../images/jobhunter/face.jpg"
+                                                                                    style="background-color: white;border-radius:50%; margin-top: 10px ;width: 130px;height: 130px;;"/>
                     <div class="" style="color: white;" id="nickname"> 陈镜冰</div>
                 </div>
 
@@ -178,6 +186,13 @@
                             <a id='demo5' data-options='{"type":"time"}' class="mui-navigate-right btn "><span
                                     class="mui-icon iconfont mui-icon mui-icon-spinner mui-spin "></span>定时读书<span id='timing'
                                                                                                                    style="margin-left: 50%"></span></a>
+                        </li>
+                        <li class="mui-table-view-cell ">
+                            <!--<button id='demo1' data-options='{}' class=" mui-navigate-right"><span class="mui-icon iconfont mui-icon mui-icon-spinner mui-spin "></span>定时读书</button>-->
+                            <a id='demo6' href="../book/collect_book.html" class="mui-navigate-right"><span
+                                    class="mui-icon iconfont mui-icon mui-icon-starhalf mui-spin "></span>收藏笔记<span
+                                    id='collect_books'
+                                    style="margin-left: 50%"></span></a>
                         </li>
                     </ul>
                 </div>
@@ -260,28 +275,7 @@
         }
 
 
-        //设置收藏书单页面
-        var imageEmpty = $("#image_empty");
-        var collectBookTable = $("#collect_book");
-        var collectBookList = document.body.querySelector('#collect_book');
-        var collectBookInfo = JsInteractionEvent.getUserCollectBook();
-        var collectBookInfoArray = JSON.parse(collectBookInfo);
-        if (collectBookInfoArray.length == 0) {
-          imageEmpty.show();
-          collectBookTable.hide();
-        } else {
-          imageEmpty.hide();
-          collectBookTable.show();
-          for (var j = 0; j < collectBookInfoArray.length; j++) {
-            var li = document.createElement('li');
-            li.className = 'mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3';
-            var imageSrc1 = "../images/books/" + collectBookInfoArray[j].book_english_name + ".jpg";
-            var hrefSrc1 = "../book/book_info.html?book_english_name=" + collectBookInfoArray[j].book_english_name;
-            var bookName = collectBookInfoArray[j].book_name;
-            li.innerHTML = '<a href=' + hrefSrc1 + '>' + '<img src=' + imageSrc1 + ' style="height: 90px;width: 80px;"/>' + '<div class="mui-media-body">' + bookName + '</div> ' + '</a>';
-            collectBookList.appendChild(li);
-          }
-        }
+        //设置收藏笔记页面
 
 
         //设置我页面

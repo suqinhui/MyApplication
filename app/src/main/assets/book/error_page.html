@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+  <link href="../css/mui.min.css" rel="stylesheet"/>
+  <link href="../css/hwl.css" rel="stylesheet"/>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="../SUI Mobile/lib/css/sm.min.css">
+  <link rel="stylesheet" href="../SUI Mobile/lib/css/sm-extend.min.css">
+  <style type="text/css">
+    .panel2 {
+    line-height: 60px;
+    }
+
+    .panel2 .mui-pull-right {
+    line-height: normal;
+    padding-right: 10px;
+    }
+
+    .panel3 {
+    line-height: 5px;
+    float: left;
+    }
+
+    .welfare-color {
+    border-color: #10cbe0;
+    color: #10cbe0;
+    }
+
+    .devile-color {
+    color: white;
+    }
+  </style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+  <a class="mui-icon mui-icon-left-nav mui-pull-left" onClick="javascript :history.back(-1);"></a>
+  <h1 class="mui-title">错题集</h1>
+</header>
+<div style="margin-top: 45px">
+  <ul class="mui-table-view">
+  </ul>
+</div>
+<script src="../js/mui.min.js"></script>
+<script src="../js/util.js"></script>
+<script src="../SUI Mobile/plugin/tests/vendor/jquery.min.js"></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/sm-extend.min.js' charset='utf-8'></script>
+<script type="text/javascript">
+      $(document).ready(function () {
+        $.showPreloader();  //加载中
+        setTimeout(function () {
+          $.hidePreloader();
+        }, 500);
+        //用来获取前一个页面传递过来的数据
+        var GetQueryString = function (name) {
+          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+          var r = window.location.search.substr(1).match(reg);
+          if (r != null) return unescape(r[2]);
+          return null;
+        };
+        var bookEnglishName = GetQueryString('book_english_name'); //获取页面中的
+        var bookChapter = JsInteractionEvent.getBookChapter(bookEnglishName);
+        var bookChapterObj = JSON.parse(bookChapter);
+        var chapter = document.body.querySelector('.mui-table-view');
+        for (var i = 0; i < bookChapterObj.length; i++) {
+          var li = document.createElement('li');
+          li.className = "mui-table-view-cell";
+          var hrefSrc = "read_book.html?book_english_name=" + bookChapterObj[i].book_english_name + "&chapter_id=" + bookChapterObj[i].chapter_id;
+          var chapterName = bookChapterObj[i].chapter_name;
+          li.innerHTML = '<a href=' + hrefSrc + '>' + chapterName + '</a> ';
+          chapter.appendChild(li);
+        }
+      });
+    </script>
+<script>
+      $.init();
+    </script>
+</body>
+
+</html>

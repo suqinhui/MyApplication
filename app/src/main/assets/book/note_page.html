@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>首页</title>
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+  <link href="../css/mui.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/mui.css"/>
+  <link href="../css/hwl.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+  <!--标准mui.css-->
+  <!--App自定义的css-->
+  <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+  <link href="../css/mui.picker.css" rel="stylesheet"/>
+  <link href="../css/mui.poppicker.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css"/>
+  <!--<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />-->
+  <style>
+    .slide-img {
+    height: 150px;
+    }
+  </style>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="../SUI Mobile/lib/css/sm.min.css">
+  <link rel="stylesheet" href="../SUI Mobile/lib/css/sm-extend.min.css">
+
+</head>
+<body>
+
+<div class="page-group" id="page_group">
+  <div class="page page-current" id="page_book_list">
+    <!-- 标题栏 -->
+    <header class="mui-bar mui-bar-nav">
+      <a class="mui-icon mui-icon-left-nav mui-pull-left" onClick="javascript :history.back(-1);"></a>
+      <h4 class="title" style="font-size: 20px">笔记</h4>
+    </header>
+    <!-- 工具栏 -->
+
+    <!-- 这里是页面内容区 -->
+    <div class="content" style="margin-top: 40px">
+      <!--数据列表-->
+      <div style="text-align: center" id="image_empty">
+        <img src="../images/empty.png" style="margin-top: 100px">
+        <h4 style="margin-top: 20px">暂无笔记</h4>
+      </div>
+      <ul id="note_list" class="mui-table-view mui-table-view-chevron">
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="../js/mui.min.js"></script>
+<script src="../js/mui.picker.js"></script>
+<script src="../js/mui.picker.min.js"></script>
+<script src="../js/mui.poppicker.js"></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/sm-extend.min.js' charset='utf-8'></script>
+<script>
+      $(document).ready(function (e) {
+        var imageEmpty = $("#image_empty");
+        var noteList = $("#note_list");
+//        alert(JsInteractionEvent.getUserNoteList());
+        var bookList = JsInteractionEvent.getUserNoteList();
+        var bookListArray = JSON.parse(bookList);
+        if (bookListArray.length == 0) {
+          imageEmpty.show();
+          noteList.hide();
+        } else {
+          imageEmpty.hide();
+          noteList.show();
+          //alert(bookListArray.length);
+          var table = document.body.querySelector('.mui-table-view');
+          for (var i = 0; i < bookListArray.length; i++) {
+            var li = document.createElement('li');
+            li.className = 'mui-table-view-cell ' + 'book_list';
+            var imageSrc = "../images/books/" + bookListArray[i].book_english_name + ".jpg";
+            var hrefSrc = "../book/note_list.html?book_english_name=" + bookListArray[i].book_english_name;
+            li.innerHTML = '<div>' + '<div class="flex"><a href = ' + hrefSrc + '>' + '<img src=' + imageSrc + ' alt="" style = "height:90px;width:80px"/>' + '<div class="flex-main" style="margin-left: 10px;">' + '<h4>' + bookListArray[i].book_name + '</h4>' + '<p>' + bookListArray[i].author + '</p>' + '<div class="fs-14" style="color: grade;" >' + ' ' + '<div class="fs-14" style="color: blue;">' + bookListArray[i].years + '</div>' + '</div>' + '</a></div>' + '</div>';
+            table.appendChild(li);
+          }
+        }
+      });
+    </script>
+<script>
+      $.init();
+    </script>
+</body>
+</html>

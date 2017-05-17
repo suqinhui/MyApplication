@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Hello MUI</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <!--标准mui.css-->
+  <link rel="stylesheet" href="../css/mui.min.css">
+  <!--App自定义的css-->
+  <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+</head>
+
+<body>
+
+<header class="mui-bar mui-bar-nav">
+  <a class="mui-icon mui-icon-left-nav mui-pull-left" onClick="javascript :history.back(-1);"></a>
+  <h1 class="mui-title">笔记详情</h1>
+</header>
+<div class="mui-content">
+  <div class="mui-card">
+
+    <div class="mui-input-row">
+      <input style="width: 100%" id="title">
+    </div>
+
+  </div>
+  <div class="mui-card">
+
+    <textarea style="width: 100%;height: 300px;" id="content" placeholder="请输入笔记内容"></textarea>
+  </div>
+  <footer style="height: 20px;">
+    <div class="mui-control-content mui-active" style="height: 20px;">
+      <button id='save' class="mui-btn mui-btn-block mui-btn-primary"
+              style="height: 10px;width:150px;padding-bottom: 40px;margin-left: 30%;text-align: center;">
+        保存
+      </button>
+    </div>
+  </footer>
+</div>
+</body>
+<script src="../js/mui.min.js"></script>
+<script src="../SUI Mobile/plugin/tests/vendor/jquery.min.js"></script>
+<script>
+    //用来获取前一个页面传递过来的数据
+    var GetQueryString = function (name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      var r = decodeURI(window.location.search).substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    };
+    var bookEnglishName = GetQueryString('book_english_name'); //获取页面中的
+    var noteTitle = GetQueryString('note_title'); //获取页面中的
+    var noteContent = GetQueryString('note_content'); //获取页面中的
+    var title = $("#title");
+    var content = $("#content");
+    var save = $("#save");
+    title.attr("value", noteTitle);
+    content.html(noteContent);
+    save.click(function () {
+      if (title.val() == "" || content.val() == "") {
+        alert("笔记的标题或内容不能为空，请重新输入！");
+      } else {
+        //更新到用户笔记表中
+        JsInteractionEvent.updateUserNote(bookEnglishName, title.val(), content.val());
+        alert("保存成功!");
+        window.history.back(-1);
+      }
+    });
+  </script>
+</html>

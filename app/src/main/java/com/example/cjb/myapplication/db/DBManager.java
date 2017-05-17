@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.webkit.JavascriptInterface;
 
+import com.example.cjb.myapplication.util.SharedPreferencesUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -282,4 +284,73 @@ public class DBManager {
         db.execSQL("update account set today_integration='0'");
     }
 
+    //插入笔记
+    public boolean dbInsertIntoUserNote(String username, String bookEnglishName, String title, String content) {
+        Cursor cursor = db.rawQuery("select * from user_note where username='" + username + "' and book_english_name='" + bookEnglishName + "' and note_title='" + title + "'", null);
+        if (cursor.getCount() == 0) {
+            db.execSQL("insert into user_note(username,book_english_name,note_title,note_content)values('" + username + "','" + bookEnglishName + "','" + title + "','" + content + "')");
+            cursor.close();
+            return false;
+        } else {
+            cursor.close();
+            return true;
+        }
+    }
+
+    //更新笔记
+    public void dbUpdateUserNote(String username, String bookEnglishName, String title, String content) {
+        Cursor cursor = db.rawQuery("select * from user_note where username='" + username + "' and book_english_name='" + bookEnglishName + "' and note_title='" + title + "'", null);
+        if (cursor.getCount() == 0) {
+            db.execSQL("insert into user_note(username,book_english_name,note_title,note_content)values('" + username + "','" + bookEnglishName + "','" + title + "','" + content + "')");
+            cursor.close();
+        } else {
+            db.execSQL("update user_note set note_content='" + content + "' where username='" + username + "' and book_english_name='" + bookEnglishName + "' and note_title='" + title + "'");
+            cursor.close();
+        }
+    }
+
+    //获取用户的笔记书籍信息
+    public String dbGetUserNoteList(String username) {
+        Cursor cursor = db.rawQuery("select distinct book_english_name from user_note where username='" + username + "'", null);
+        JSONArray userNoteArray = new JSONArray();
+        while (cursor.moveToNext()) {
+            try {
+                JSONObject userNoteObject = new JSONObject();
+                //先获取到书籍英文名，再到书籍表查询书籍信息
+                String bookEnglishName = cursor.getString(cursor.getColumnIndex("book_english_name"));
+                Cursor cursor1 = db.rawQuery("select * from book_table where book_english_name='" + bookEnglishName + "'", null);
+                while (cursor1.moveToNext()) {
+                    userNoteObject.put("book_name", cursor1.getString(cursor1.getColumnIndex("book_name")));
+                    userNoteObject.put("book_english_name", cursor1.getString(cursor1.getColumnIndex("book_english_name")));
+                    userNoteObject.put("author", cursor1.getString(cursor1.getColumnIndex("author")));
+                    userNoteObject.put("years", cursor1.getString(cursor1.getColumnIndex("years")));
+                }
+                userNoteArray.put(userNoteObject);
+                cursor1.close();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return userNoteArray.toString();
+    }
+
+    //获取用户的指定书籍的所有笔记列表
+    public String dbGetUserAllNoteList(String username, String bookEnglishName) {
+        Cursor cursor = db.rawQuery("select * from user_note where username='" + username + "' and book_english_name='" + bookEnglishName + "'", null);
+        JSONArray userAllNoteArray = new JSONArray();
+        while (cursor.moveToNext()) {
+            try {
+                JSONObject userAllNoteObject = new JSONObject();
+                userAllNoteObject.put("note_title", cursor.getString(cursor.getColumnIndex("note_title")));
+                userAllNoteObject.put("note_content", cursor.getString(cursor.getColumnIndex("note_content")));
+                userAllNoteObject.put("book_english_name", cursor.getString(cursor.getColumnIndex("book_english_name")));
+                userAllNoteArray.put(userAllNoteObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return userAllNoteArray.toString();
+    }
 }
