@@ -54,8 +54,10 @@
       return null;
     };
     var bookEnglishName = GetQueryString('book_english_name'); //获取页面中的
+    var noteId = GetQueryString('id'); //获取页面中的
     var noteTitle = GetQueryString('note_title'); //获取页面中的
     var noteContent = GetQueryString('note_content'); //获取页面中的
+    //    alert(noteId + " " + noteTitle + " " + noteContent);
     var title = $("#title");
     var content = $("#content");
     var save = $("#save");
@@ -66,9 +68,14 @@
         alert("笔记的标题或内容不能为空，请重新输入！");
       } else {
         //更新到用户笔记表中
-        JsInteractionEvent.updateUserNote(bookEnglishName, title.val(), content.val());
-        alert("保存成功!");
-        window.history.back(-1);
+        var result = JsInteractionEvent.updateUserNote(bookEnglishName, parseInt(noteId), title.val(), content.val());
+//      alert(result);
+        if (result == true) {
+          alert("该标题笔记已存在，请重新输入！");
+        } else {
+          alert("保存成功!");
+          window.history.back(-1);
+        }
       }
     });
   </script>

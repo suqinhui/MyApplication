@@ -70,13 +70,11 @@
         for (var i = 0; i < userAllNoteListObj.length; i++) {
           var li = document.createElement('li');
           li.className = "mui-table-view-cell";
-          var hrefSrc = encodeURI("note_detail.html?book_english_name=" + userAllNoteListObj[i].book_english_name + "&note_title=" + userAllNoteListObj[i].note_title + "&note_content=" + userAllNoteListObj[i].note_content);
+          var hrefSrc = encodeURI("note_detail.html?id=" + userAllNoteListObj[i].id + "&book_english_name=" + userAllNoteListObj[i].book_english_name + "&note_title=" + userAllNoteListObj[i].note_title + "&note_content=" + userAllNoteListObj[i].note_content);
           var noteTitle = userAllNoteListObj[i].note_title;
           li.innerHTML = '<a href=' + hrefSrc + '>' + noteTitle + '</a> ';
           noteList.appendChild(li);
         }
-
-
       });
     </script>
 <script>

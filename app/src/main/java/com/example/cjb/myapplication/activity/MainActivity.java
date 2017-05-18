@@ -402,9 +402,9 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         //更新笔记
-        public void updateUserNote(String bookEnglishName, String title, String content) {
+        public void updateUserNote(String bookEnglishName, int id, String title, String content) {
             String username = SharedPreferencesUtils.getParam(MainActivity.this, "username", "").toString();
-            dbManager.dbUpdateUserNote(username,bookEnglishName,title,content);
+            dbManager.dbUpdateUserNote(username, bookEnglishName, id, title, content);
         }
 
         @JavascriptInterface

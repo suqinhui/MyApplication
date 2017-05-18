@@ -288,7 +288,7 @@ public class DBManager {
     public boolean dbInsertIntoUserNote(String username, String bookEnglishName, String title, String content) {
         Cursor cursor = db.rawQuery("select * from user_note where username='" + username + "' and book_english_name='" + bookEnglishName + "' and note_title='" + title + "'", null);
         if (cursor.getCount() == 0) {
-            db.execSQL("insert into user_note(username,book_english_name,note_title,note_content)values('" + username + "','" + bookEnglishName + "','" + title + "','" + content + "')");
+            db.execSQL("insert into user_note(id,username,book_english_name,note_title,note_content)values(" + null + ",'" + username + "','" + bookEnglishName + "','" + title + "','" + content + "')");
             cursor.close();
             return false;
         } else {
@@ -298,15 +298,8 @@ public class DBManager {
     }
 
     //更新笔记
-    public void dbUpdateUserNote(String username, String bookEnglishName, String title, String content) {
-        Cursor cursor = db.rawQuery("select * from user_note where username='" + username + "' and book_english_name='" + bookEnglishName + "' and note_title='" + title + "'", null);
-        if (cursor.getCount() == 0) {
-            db.execSQL("insert into user_note(username,book_english_name,note_title,note_content)values('" + username + "','" + bookEnglishName + "','" + title + "','" + content + "')");
-            cursor.close();
-        } else {
-            db.execSQL("update user_note set note_content='" + content + "' where username='" + username + "' and book_english_name='" + bookEnglishName + "' and note_title='" + title + "'");
-            cursor.close();
-        }
+    public void dbUpdateUserNote(String username, String bookEnglishName, int id, String title, String content) {
+        db.execSQL("update user_note set note_content='" + content + "',note_title='" + title + "' where username='" + username + "' and book_english_name='" + bookEnglishName + "' and id='" + id + "'");
     }
 
     //获取用户的笔记书籍信息
@@ -342,6 +335,7 @@ public class DBManager {
         while (cursor.moveToNext()) {
             try {
                 JSONObject userAllNoteObject = new JSONObject();
+                userAllNoteObject.put("id", cursor.getString(cursor.getColumnIndex("id")));
                 userAllNoteObject.put("note_title", cursor.getString(cursor.getColumnIndex("note_title")));
                 userAllNoteObject.put("note_content", cursor.getString(cursor.getColumnIndex("note_content")));
                 userAllNoteObject.put("book_english_name", cursor.getString(cursor.getColumnIndex("book_english_name")));
