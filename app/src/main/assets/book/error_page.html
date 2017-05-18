@@ -1,83 +1,84 @@
 <!doctype html>
 <html>
-
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>首页</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
   <link href="../css/mui.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/mui.css"/>
   <link href="../css/hwl.css" rel="stylesheet"/>
-
+  <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+  <!--标准mui.css-->
+  <!--App自定义的css-->
+  <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+  <link href="../css/mui.picker.css" rel="stylesheet"/>
+  <link href="../css/mui.poppicker.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css"/>
+  <!--<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />-->
+  <style>
+    .slide-img {
+    height: 150px;
+    }
+  </style>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="stylesheet" href="../SUI Mobile/lib/css/sm.min.css">
   <link rel="stylesheet" href="../SUI Mobile/lib/css/sm-extend.min.css">
-  <style type="text/css">
-    .panel2 {
-    line-height: 60px;
-    }
 
-    .panel2 .mui-pull-right {
-    line-height: normal;
-    padding-right: 10px;
-    }
-
-    .panel3 {
-    line-height: 5px;
-    float: left;
-    }
-
-    .welfare-color {
-    border-color: #10cbe0;
-    color: #10cbe0;
-    }
-
-    .devile-color {
-    color: white;
-    }
-  </style>
 </head>
-
 <body>
-<header class="mui-bar mui-bar-nav">
-  <a class="mui-icon mui-icon-left-nav mui-pull-left" onClick="javascript :history.back(-1);"></a>
-  <h1 class="mui-title">错题集</h1>
-</header>
-<div style="margin-top: 45px">
-  <ul class="mui-table-view">
-  </ul>
+
+<div class="page-group" id="page_group">
+  <div class="page page-current" id="page_book_list">
+    <!-- 标题栏 -->
+    <header class="mui-bar mui-bar-nav">
+      <a class="mui-icon mui-icon-left-nav mui-pull-left" onClick="javascript :history.back(-1);"></a>
+      <h4 class="title" style="font-size: 20px">错题集</h4>
+    </header>
+    <!-- 工具栏 -->
+
+    <!-- 这里是页面内容区 -->
+    <div class="content" style="margin-top: 40px">
+      <!--数据列表-->
+      <div style="text-align: center" id="image_empty">
+        <img src="../images/empty.png" style="margin-top: 100px">
+        <h4 style="margin-top: 20px">暂无错题</h4>
+      </div>
+      <ul id="error_list" class="mui-table-view mui-table-view-chevron">
+      </ul>
+    </div>
+  </div>
 </div>
 <script src="../js/mui.min.js"></script>
-<script src="../js/util.js"></script>
-<script src="../SUI Mobile/plugin/tests/vendor/jquery.min.js"></script>
+<script src="../js/mui.picker.js"></script>
+<script src="../js/mui.picker.min.js"></script>
+<script src="../js/mui.poppicker.js"></script>
 <script type='text/javascript' src='../SUI Mobile/lib/js/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='../SUI Mobile/lib/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='../SUI Mobile/lib/js/sm-extend.min.js' charset='utf-8'></script>
-<script type="text/javascript">
-      $(document).ready(function () {
-        $.showPreloader();  //加载中
-        setTimeout(function () {
-          $.hidePreloader();
-        }, 500);
-        //用来获取前一个页面传递过来的数据
-        var GetQueryString = function (name) {
-          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-          var r = window.location.search.substr(1).match(reg);
-          if (r != null) return unescape(r[2]);
-          return null;
-        };
-        var bookEnglishName = GetQueryString('book_english_name'); //获取页面中的
-        var bookChapter = JsInteractionEvent.getBookChapter(bookEnglishName);
-        var bookChapterObj = JSON.parse(bookChapter);
-        var chapter = document.body.querySelector('.mui-table-view');
-        for (var i = 0; i < bookChapterObj.length; i++) {
-          var li = document.createElement('li');
-          li.className = "mui-table-view-cell";
-          var hrefSrc = "read_book.html?book_english_name=" + bookChapterObj[i].book_english_name + "&chapter_id=" + bookChapterObj[i].chapter_id;
-          var chapterName = bookChapterObj[i].chapter_name;
-          li.innerHTML = '<a href=' + hrefSrc + '>' + chapterName + '</a> ';
-          chapter.appendChild(li);
+<script>
+      $(document).ready(function (e) {
+        var imageEmpty = $("#image_empty");
+        var errorList = $("#error_list");
+        var bookList = JsInteractionEvent.getUserErrorList();
+        var bookListArray = JSON.parse(bookList);
+        if (bookListArray.length == 0) {
+          imageEmpty.show();
+          errorList.hide();
+        } else {
+          imageEmpty.hide();
+          errorList.show();
+          //alert(bookListArray.length);
+          var table = document.body.querySelector('.mui-table-view');
+          for (var i = 0; i < bookListArray.length; i++) {
+            var li = document.createElement('li');
+            li.className = 'mui-table-view-cell ' + 'book_list';
+            var imageSrc = "../images/books/" + bookListArray[i].book_english_name + ".jpg";
+            var hrefSrc = "../book/error_list.html?book_english_name=" + bookListArray[i].book_english_name;
+            li.innerHTML = '<div>' + '<div class="flex"><a href = ' + hrefSrc + '>' + '<img src=' + imageSrc + ' alt="" style = "height:90px;width:80px"/>' + '<div class="flex-main" style="margin-left: 10px;">' + '<h4>' + bookListArray[i].book_name + '</h4>' + '<p>' + bookListArray[i].author + '</p>' + '<div class="fs-14" style="color: grade;" >' + ' ' + '<div class="fs-14" style="color: blue;">' + bookListArray[i].years + '</div>' + '</div>' + '</a></div>' + '</div>';
+            table.appendChild(li);
+          }
         }
       });
     </script>
@@ -85,5 +86,4 @@
       $.init();
     </script>
 </body>
-
 </html>

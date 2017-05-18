@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>首页</title>
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+  <link href="../css/mui.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/mui.css"/>
+  <link href="../css/hwl.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+  <!--标准mui.css-->
+  <!--App自定义的css-->
+  <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+  <link href="../css/mui.picker.css" rel="stylesheet"/>
+  <link href="../css/mui.poppicker.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css"/>
+  <!--<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />-->
+  <style>
+    .slide-img {
+    height: 150px;
+    }
+  </style>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="../SUI Mobile/lib/css/sm.min.css">
+  <link rel="stylesheet" href="../SUI Mobile/lib/css/sm-extend.min.css">
+
+</head>
+<body>
+
+<div class="page-group" id="page_group">
+  <div class="page page-current" id="page_book_list">
+    <!-- 标题栏 -->
+    <header class="mui-bar mui-bar-nav">
+      <a class="mui-icon mui-icon-left-nav mui-pull-left" onClick="javascript :history.back(-1);"></a>
+      <h4 class="title" style="font-size: 20px">错题列表</h4>
+    </header>
+    <!-- 工具栏 -->
+
+    <!-- 这里是页面内容区 -->
+    <div class="content" style="margin-top: 40px">
+      <!--数据列表-->
+      <div id="card_list" class="mui-content"></div>
+      <h1>&nbsp;</h1>
+    </div>
+  </div>
+</div>
+<script src="../js/mui.min.js"></script>
+<script src="../js/mui.picker.js"></script>
+<script src="../js/mui.picker.min.js"></script>
+<script src="../js/mui.poppicker.js"></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='../SUI Mobile/lib/js/sm-extend.min.js' charset='utf-8'></script>
+<script>
+      $(document).ready(function (e) {
+        //用来获取前一个页面传递过来的数据
+        var GetQueryString = function (name) {
+          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+          var r = window.location.search.substr(1).match(reg);
+          if (r != null) return unescape(r[2]);
+          return null;
+        };
+        var bookEnglishName = GetQueryString('book_english_name'); //获取页面中的
+        var errorListInfo = JsInteractionEvent.getUserAllErrorList(bookEnglishName);
+
+        var errorListInfoArray = JSON.parse(errorListInfo);
+        var questionObj = errorListInfoArray[0];
+        var questionContent = questionObj.question_content;
+        var answerA = questionObj.answer_a;
+        var answerB = questionObj.answer_b;
+        var answerC = questionObj.answer_c;
+        var answerD = questionObj.answer_d;
+        var answerWrong = questionObj.wrong_answer;
+        var answerRight = questionObj.right_answer;
+//        alert(questionContent + " " + answerA + " " + answerB + " " + answerC + " " + answerD + " " + answerWrong + " " + answerRight);
+        var cardList = $("#card_list");
+        for (var i = 0; i < errorListInfoArray.length; i++) {
+          var questionObj = errorListInfoArray[i];
+          var questionContent = questionObj.question_content;
+          var answerA = questionObj.answer_a;
+          var answerB = questionObj.answer_b;
+          var answerC = questionObj.answer_c;
+          var answerD = questionObj.answer_d;
+          var answerWrong = questionObj.wrong_answer;
+          var answerRight = questionObj.right_answer;
+          cardList.append('<div class="mui-card">' +
+                  '<div class="mui-input-row mui-radio mui-left">' +
+                  '<h5 style="margin-left: 10px; margin-top: 10px;margin-top: 10px;line-height: 20px; color: #000;">' + (i + 1) + "、" + questionContent + ' </h5> ' +
+                  '</div>' +
+                  '<div class="mui-input-row mui-radio mui-left">' +
+                  '<label>' + answerA + '</label>' +
+                  '<input name="radio1" type="radio" value="A" disabled>' +
+                  '</div>' +
+                  '<div class="mui-input-row mui-radio mui-left">' +
+                  '<label>' + answerB + '</label>' +
+                  '<input name="radio1" type="radio" value="B" disabled>' +
+                  '</div>' +
+                  '<div class="mui-input-row mui-radio mui-left">' +
+                  '<label>' + answerC + '</label> ' +
+                  '<input name="radio1" type="radio" value="C" disabled> ' +
+                  '</div><div class="mui-input-row mui-radio mui-left"> ' +
+                  '<label>' + answerD + '</label> ' +
+                  '<input name="radio1" type="radio" value="D" disabled> ' +
+                  '</div>' +
+                  '<div class="mui-input-row mui-radio mui-left"> ' +
+                  '<h5 style="color: green; margin-left: 20px">' +
+                  '<span style="color: red; margin-right: 20px">你选择了：' + answerWrong + '</span>正确答案是：' + answerRight + '</h5> ' +
+                  '</div>' +
+                  '</div>');
+
+        }
+      });
+    </script>
+<script>
+      $.init();
+    </script>
+</body>
+</html>

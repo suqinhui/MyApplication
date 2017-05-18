@@ -29,8 +29,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         //用户笔记表，id自增
         db.execSQL("create table user_note(id INTEGER PRIMARY KEY autoincrement,username varchar(20) not null,book_english_name varchar(20) not null,note_title varchar(20) not null,note_content varchar(20) not null)");
         //用户错题集
+        db.execSQL("create table user_error(username varchar(20) not null,book_english_name varchar(20) not null,question_content text not null,answer_a varchar(100) not null,answer_b varchar(100) not null,answer_c varchar(100) not null,answer_d varchar(100) not null,wrong_answer varchar(100) not null,right_answer varchar(100) not null)");
         
-
 
         //插入一个管理员用户
         db.execSQL("insert into account(username,password,nickname,sex,age,email,all_integration,today_integration,timing,face_image)values('admin','admin','管理员','请选择','','','0','0','0','')");

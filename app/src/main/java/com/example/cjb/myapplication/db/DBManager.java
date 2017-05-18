@@ -347,4 +347,65 @@ public class DBManager {
         cursor.close();
         return userAllNoteArray.toString();
     }
+
+    //插入用户错题
+    public void dbInsertIntoUserError(String username, String bookEnglishName, String questionContent, String answerA, String answerB, String answerC, String answerD, String answerWrong, String answerRight) {
+        Cursor cursor = db.rawQuery("select * from user_error where username='" + username + "' and book_english_name='" + bookEnglishName + "' and question_content='" + questionContent + "'", null);
+        if (cursor.getCount() == 0) {
+            db.execSQL("insert into user_error(username,book_english_name,question_content,answer_a,answer_b,answer_c,answer_d,wrong_answer,right_answer)values('" + username + "','" + bookEnglishName + "','" + questionContent + "','" + answerA + "','" + answerB + "','" + answerC + "','" + answerD + "','" + answerWrong + "','" + answerRight + "')");
+            cursor.close();
+        } else {
+            db.execSQL("update user_error set wrong_answer='" + answerWrong + "' where username='" + username + "' and book_english_name='"+bookEnglishName+"' and question_content='" + questionContent + "'");
+            cursor.close();
+        }
+    }
+
+    //获取用户的错题书籍信息
+    public String dbGetUserErrorList(String username) {
+        Cursor cursor = db.rawQuery("select distinct book_english_name from user_error where username='" + username + "'", null);
+        JSONArray userErrorArray = new JSONArray();
+        while (cursor.moveToNext()) {
+            try {
+                JSONObject userErrorObject = new JSONObject();
+                //先获取到书籍英文名，再到书籍表查询书籍信息
+                String bookEnglishName = cursor.getString(cursor.getColumnIndex("book_english_name"));
+                Cursor cursor1 = db.rawQuery("select * from book_table where book_english_name='" + bookEnglishName + "'", null);
+                while (cursor1.moveToNext()) {
+                    userErrorObject.put("book_name", cursor1.getString(cursor1.getColumnIndex("book_name")));
+                    userErrorObject.put("book_english_name", cursor1.getString(cursor1.getColumnIndex("book_english_name")));
+                    userErrorObject.put("author", cursor1.getString(cursor1.getColumnIndex("author")));
+                    userErrorObject.put("years", cursor1.getString(cursor1.getColumnIndex("years")));
+                }
+                userErrorArray.put(userErrorObject);
+                cursor1.close();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return userErrorArray.toString();
+    }
+
+    //获取用户的指定书籍的所有错题列表
+    public String dbGetUserAllErrorList(String username, String bookEnglishName) {
+        Cursor cursor = db.rawQuery("select * from user_error where username='" + username + "' and book_english_name='" + bookEnglishName + "'", null);
+        JSONArray userAllNoteArray = new JSONArray();
+        while (cursor.moveToNext()) {
+            try {
+                JSONObject userAllNoteObject = new JSONObject();
+                userAllNoteObject.put("question_content", cursor.getString(cursor.getColumnIndex("question_content")));
+                userAllNoteObject.put("answer_a", cursor.getString(cursor.getColumnIndex("answer_a")));
+                userAllNoteObject.put("answer_b", cursor.getString(cursor.getColumnIndex("answer_b")));
+                userAllNoteObject.put("answer_c", cursor.getString(cursor.getColumnIndex("answer_c")));
+                userAllNoteObject.put("answer_d", cursor.getString(cursor.getColumnIndex("answer_d")));
+                userAllNoteObject.put("wrong_answer", cursor.getString(cursor.getColumnIndex("wrong_answer")));
+                userAllNoteObject.put("right_answer", cursor.getString(cursor.getColumnIndex("right_answer")));
+                userAllNoteArray.put(userAllNoteObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return userAllNoteArray.toString();
+    }
 }

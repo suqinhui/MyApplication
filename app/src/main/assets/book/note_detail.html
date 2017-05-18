@@ -68,14 +68,9 @@
         alert("笔记的标题或内容不能为空，请重新输入！");
       } else {
         //更新到用户笔记表中
-        var result = JsInteractionEvent.updateUserNote(bookEnglishName, parseInt(noteId), title.val(), content.val());
-//      alert(result);
-        if (result == true) {
-          alert("该标题笔记已存在，请重新输入！");
-        } else {
-          alert("保存成功!");
-          window.history.back(-1);
-        }
+        JsInteractionEvent.updateUserNote(bookEnglishName, parseInt(noteId), title.val(), content.val());
+        alert("保存成功!");
+        window.history.back(-1);
       }
     });
   </script>

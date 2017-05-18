@@ -421,7 +421,26 @@ public class MainActivity extends AppCompatActivity {
             return dbManager.dbGetUserAllNoteList(username, bookEnglishName);
         }
 
+        @JavascriptInterface
+        //插入用户错题
+        public void insertIntoUserError(String bookEnglishName, String questionContent, String answerA, String answerB, String answerC, String answerD, String answerWrong, String answerRight) {
+            String username = SharedPreferencesUtils.getParam(MainActivity.this, "username", "").toString();
+            dbManager.dbInsertIntoUserError(username, bookEnglishName, questionContent, answerA, answerB, answerC, answerD, answerWrong, answerRight);
+        }
 
+        @JavascriptInterface
+        //获取用户的错题书籍信息
+        public String getUserErrorList() {
+            String username = SharedPreferencesUtils.getParam(MainActivity.this, "username", "").toString();
+            return dbManager.dbGetUserErrorList(username);
+        }
+
+        @JavascriptInterface
+        //获取用户的指定书籍的所有错题列表
+        public String getUserAllErrorList(String bookEnglishName) {
+            String username = SharedPreferencesUtils.getParam(MainActivity.this, "username", "").toString();
+            return dbManager.dbGetUserAllErrorList(username, bookEnglishName);
+        }
     }
 
     //按返回建不退出，保持后台运行

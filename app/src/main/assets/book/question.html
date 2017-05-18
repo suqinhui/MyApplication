@@ -275,30 +275,40 @@
             rightAnswer1.html("回答正确！");
           } else {
             rightAnswer1.html("回答错误！正确答案是：" + questionInfoArray[0].right_answer);
+            //插入到数据库
+            JsInteractionEvent.insertIntoUserError(bookEnglishName,questionInfoArray[0].question_content,questionInfoArray[0].answer_a,questionInfoArray[0].answer_b,questionInfoArray[0].answer_c,questionInfoArray[0].answer_d,questionAnswer1,questionInfoArray[0].right_answer);
           }
           if (questionAnswer2 == questionInfoArray[1].right_answer) {
             getCount = getCount + 10;
             rightAnswer2.html("回答正确！");
           } else {
             rightAnswer2.html("回答错误！正确答案是：" + questionInfoArray[1].right_answer);
+            //插入到数据库
+            JsInteractionEvent.insertIntoUserError(bookEnglishName,questionInfoArray[1].question_content,questionInfoArray[1].answer_a,questionInfoArray[1].answer_b,questionInfoArray[1].answer_c,questionInfoArray[1].answer_d,questionAnswer2,questionInfoArray[1].right_answer);
           }
           if (questionAnswer3 == questionInfoArray[2].right_answer) {
             getCount = getCount + 10;
             rightAnswer3.html("回答正确！");
           } else {
             rightAnswer3.html("回答错误！正确答案是：" + questionInfoArray[2].right_answer);
+            //插入到数据库
+            JsInteractionEvent.insertIntoUserError(bookEnglishName,questionInfoArray[2].question_content,questionInfoArray[2].answer_a,questionInfoArray[2].answer_b,questionInfoArray[2].answer_c,questionInfoArray[2].answer_d,questionAnswer3,questionInfoArray[2].right_answer);
           }
           if (questionAnswer4 == questionInfoArray[3].right_answer) {
             getCount = getCount + 10;
             rightAnswer4.html("回答正确！");
           } else {
             rightAnswer4.html("回答错误！正确答案是：" + questionInfoArray[3].right_answer);
+            //插入到数据库
+            JsInteractionEvent.insertIntoUserError(bookEnglishName,questionInfoArray[3].question_content,questionInfoArray[3].answer_a,questionInfoArray[3].answer_b,questionInfoArray[3].answer_c,questionInfoArray[3].answer_d,questionAnswer4,questionInfoArray[3].right_answer);
           }
           if (questionAnswer5 == questionInfoArray[4].right_answer) {
             getCount = getCount + 10;
             rightAnswer5.html("回答正确！");
           } else {
             rightAnswer5.html("回答错误！正确答案是：" + questionInfoArray[4].right_answer);
+            //插入到数据库
+            JsInteractionEvent.insertIntoUserError(bookEnglishName,questionInfoArray[4].question_content,questionInfoArray[4].answer_a,questionInfoArray[4].answer_b,questionInfoArray[4].answer_c,questionInfoArray[4].answer_d,questionAnswer5,questionInfoArray[4].right_answer);
           }
           //判断是否回答过该问题
           var isAnswerd = JsInteractionEvent.isAnsweredChapter(bookEnglishName, bookChapterId);
